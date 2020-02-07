@@ -23,14 +23,14 @@
 @call %devroot%\vk-swiftshader-dist\buildscript\modules\throttle.cmd
 
 @rem Version control
-@rem call %devroot%\vk-swiftshader-dist\buildscript\modules\git.cmd
+@call %devroot%\vk-swiftshader-dist\buildscript\modules\git.cmd
 
 @rem Check for remaining dependencies: cmake, ninja.
 @call %devroot%\vk-swiftshader-dist\buildscript\modules\cmake.cmd
 @call %devroot%\vk-swiftshader-dist\buildscript\modules\ninja.cmd
 
-@rem If using MSVC do LLVM build.
-@rem call %devroot%\vk-swiftshader-dist\buildscript\modules\llvm.cmd
+@rem SwiftShader build.
+@call %devroot%\vk-swiftshader-dist\buildscript\modules\swiftshader.cmd
 
 @rem Binary resource editor
 @call %devroot%\vk-swiftshader-dist\buildscript\modules\resourcehacker.cmd
