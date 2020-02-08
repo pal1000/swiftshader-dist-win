@@ -20,7 +20,7 @@ IF "%%a"=="pywin32" IF %pywinsetup% LSS 2 (
 %pythonloc% -W ignore -m pip install -U "%%a"
 echo.
 )
-IF "%%a"=="pywin32" IF %pywinsetup% EQU 1 powershell -Command Start-Process "%devroot%\vk-swiftshader-dist\buildscript\modules\pywin32.cmd" -Args "%pythonloc%" -Verb runAs 2>nul
+IF "%%a"=="pywin32" IF %pywinsetup% EQU 1 powershell -Command Start-Process "%devroot%\%projectname%\buildscript\modules\pywin32.cmd" -Args "%pythonloc%" -Verb runAs 2>nul
 IF "%%a"=="pywin32" IF %pywinsetup% EQU 2 (
 echo New version of pywin32 is available.
 echo Visit https://github.com/mhammond/pywin32/releases to download it.
