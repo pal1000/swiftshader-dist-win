@@ -6,7 +6,7 @@
 @cd ..\..\
 @for %%a in ("%cd%") do @set devroot=%%~sa
 
-@set projectname=swiftshader-dist
+@set projectname=swiftshader-dist-win
 
 @rem Select target architecture
 @call %devroot%\%projectname%\buildscript\modules\abi.cmd
