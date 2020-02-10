@@ -20,6 +20,8 @@
 @echo.
 )
 @cd /d %devroot%\swiftshader
+@IF NOT EXIST build md build
+@cd build
 
 @rem Ask to update source code if git is available
 @IF %gitstate% GTR 0 set /p srcupd=Update SwiftShader source code (y/n):
@@ -66,8 +68,8 @@
 @IF /I "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_SAMPLES=ON -DSWIFTSHADER_BUILD_TESTS=ON
 @IF /I NOT "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_SAMPLES=OFF -DSWIFTSHADER_BUILD_TESTS=OFF
 
-@set buildconf=%buildconf% ..
-@rem set buildconf=%buildconf% -LAH ..
+@set buildconf=%buildconf% ..\..
+@rem set buildconf=%buildconf% -LAH ..\..
 
 @rem Ask if clean build is wanted
 @echo Removing binaries...
