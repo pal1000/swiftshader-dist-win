@@ -10,7 +10,7 @@
 )
 
 @rem Ask to do swiftshader build
-@set /p buildswiftshader=Build SwiftShader Vulkan driver (y/n):
+@set /p buildswiftshader=Build SwiftShader (y/n):
 @echo.
 @IF /I NOT "%buildswiftshader%"=="y" GOTO skipbuild
 
@@ -20,15 +20,16 @@
 @echo.
 )
 @cd /d %devroot%\swiftshader
-@IF %gitstate% GTR 0 (
-@git pull -v --progress origin
-@echo.
-@git submodule update --init --recursive
-@echo.
-)
+
+@rem Ask to update source code if git is available
+@IF %gitstate% GTR 0 set /p srcupd=Update SwiftShader source code (y/n):
+@IF %gitstate% GTR 0 echo.
+@IF /I "%srcupd%"=="y" git pull -v --progress origin
+@IF /I "%srcupd%"=="y" echo.
+@IF /I "%srcupd%"=="y" git submodule update --init --recursive
+@IF /I "%srcupd%"=="y" echo.
 
 @rem Ask for Ninja use if exists. Load it if opted for it.
-@set ninja=n
 @if NOT %ninjastate%==0 set /p ninja=Use Ninja build system instead of MsBuild (y/n); less storage device strain, faster and more efficient build:
 @if NOT %ninjastate%==0 echo.
 @if /I "%ninja%"=="y" if %ninjastate%==1 set PATH=%devroot%\ninja\;%PATH%
@@ -43,13 +44,35 @@
 @if %abi%==x64 if /I NOT "%ninja%"=="y" set buildconf=%buildconf% -A x64
 @if /I NOT "%ninja%"=="y" IF /I %PROCESSOR_ARCHITECTURE%==AMD64 set buildconf=%buildconf% -Thost=x64
 @if /I "%ninja%"=="y" set buildconf=%buildconf% "Ninja"
-@set buildconf=%buildconf% -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../%abi% ..
+@set buildconf=%buildconf% -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../%abi% -DSWIFTSHADER_WARNINGS_AS_ERRORS=OFF
+
+@set /p vk-swiftshader=Build SwiftShader Vulkan Driver - default^:yes (y/n)^:
+@echo.
+@IF /I "%vk-swiftshader%"=="n" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_VULKAN=OFF
+@IF /I NOT "%vk-swiftshader%"=="n" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_VULKAN=ON
+
+@set /p gles-swiftshader=Build SwiftShader GLES Drivers - default^:no (y/n)^:
+@echo.
+@IF /I "%gles-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_EGL=ON -DSWIFTSHADER_BUILD_GLES_CM=ON -DSWIFTSHADER_BUILD_GLESv2=ON
+@IF /I NOT "%gles-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_EGL=OFF -DSWIFTSHADER_BUILD_GLES_CM=OFF -DSWIFTSHADER_BUILD_GLESv2=OFF
+
+@set /p subzerojit=Use Subzero JIT instead of LLVM - default^:no (y/n)^:
+@echo.
+@IF /I "%subzerojit%"=="y" set buildconf=%buildconf% -DREACTOR_BACKEND=Subzero
+@IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DREACTOR_BACKEND=LLVM
+
+@set /p test-swiftshader=Build SwiftShader tests and samples - default^:no (y/n)^:
+@echo.
+@IF /I "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_SAMPLES=ON -DSWIFTSHADER_BUILD_TESTS=ON
+@IF /I NOT "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_SAMPLES=OFF -DSWIFTSHADER_BUILD_TESTS=OFF
+
+@set buildconf=%buildconf% ..
+@rem set buildconf=%buildconf% -LAH ..
 
 @rem Ask if clean build is wanted
 @echo Removing binaries...
 @echo.
 @if EXIST %abi% RD /S /Q %abi%
-@set cleanbuild=n
 @set /p cleanbuild=Do you want to clean build (y/n):
 @echo.
 @IF /I "%cleanbuild%"=="y" (
@@ -65,15 +88,17 @@
 @if /I "%ninja%"=="y" echo.
 
 @rem Configure and execute the build with the configuration made above.
+@echo Build configuration command: %buildconf%
+@echo.
 @%buildconf%
 @echo.
 @pause
 @echo.
 @if /I NOT "%ninja%"=="y" call %vsenv% %vsabi%
 @if /I NOT "%ninja%"=="y" echo.
-@if /I NOT "%ninja%"=="y" if %abi%==x86 msbuild /p^:Configuration=release,Platform=Win32 vk_swiftshader.vcxproj /m^:%throttle%
-@if /I NOT "%ninja%"=="y" if %abi%==x64 msbuild /p^:Configuration=release,Platform=x64 vk_swiftshader.vcxproj /m^:%throttle%
-@if /I "%ninja%"=="y" ninja -j %throttle% vk_swiftshader
+@if /I NOT "%ninja%"=="y" if %abi%==x86 msbuild /p^:Configuration=release,Platform=Win32 INSTALL.vcxproj /m^:%throttle%
+@if /I NOT "%ninja%"=="y" if %abi%==x64 msbuild /p^:Configuration=release,Platform=x64 INSTALL.vcxproj /m^:%throttle%
+@if /I "%ninja%"=="y" ninja -j %throttle% install
 
 :skipbuild
 @echo.
