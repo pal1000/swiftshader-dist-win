@@ -46,7 +46,7 @@
 @if %abi%==x64 if /I NOT "%ninja%"=="y" set buildconf=%buildconf% -A x64
 @if /I NOT "%ninja%"=="y" IF /I %PROCESSOR_ARCHITECTURE%==AMD64 set buildconf=%buildconf% -Thost=x64
 @if /I "%ninja%"=="y" set buildconf=%buildconf% "Ninja"
-@set buildconf=%buildconf% -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../%abi% -DSWIFTSHADER_WARNINGS_AS_ERRORS=OFF
+@set buildconf=%buildconf% -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../../../%projectname%/dist/%abi% -DSWIFTSHADER_WARNINGS_AS_ERRORS=OFF
 
 @set /p vk-swiftshader=Build SwiftShader Vulkan Driver - default^:yes (y/n)^:
 @echo.
@@ -69,12 +69,12 @@
 @IF /I NOT "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_SAMPLES=OFF -DSWIFTSHADER_BUILD_TESTS=OFF
 
 @set buildconf=%buildconf% ..\..
-@rem set buildconf=%buildconf% -LAH ..\..
+@rem set buildconf=cmake -G Ninja -DCMAKE_INSTALL_PREFIX=../../../%projectname%/dist/%abi% -LAH ..\..
 
 @rem Ask if clean build is wanted
 @echo Removing binaries...
 @echo.
-@if EXIST %abi% RD /S /Q %abi%
+@if EXIST %devroot%\%projectname%\dist\%abi% RD /S /Q %devroot%\%projectname%\dist\%abi%
 @set /p cleanbuild=Do you want to clean build (y/n):
 @echo.
 @IF /I "%cleanbuild%"=="y" (
