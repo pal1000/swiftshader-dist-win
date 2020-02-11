@@ -72,15 +72,13 @@
 @rem set buildconf=cmake -G Ninja -DCMAKE_INSTALL_PREFIX=../../../%projectname%/dist/%abi% -LAH ..\..
 
 @rem Ask if clean build is wanted
-@echo Removing binaries...
-@echo.
-@if EXIST %devroot%\%projectname%\dist\%abi% RD /S /Q %devroot%\%projectname%\dist\%abi%
 @set /p cleanbuild=Do you want to clean build (y/n):
 @echo.
 @IF /I "%cleanbuild%"=="y" (
-@echo Cleanning build system...
+@echo Cleanning build...
 @echo.
 @if EXIST buildsys-%abi% RD /S /Q buildsys-%abi%
+@if EXIST %devroot%\%projectname%\dist\%abi% RD /S /Q %devroot%\%projectname%\dist\%abi%
 )
 @IF NOT EXIST buildsys-%abi% md buildsys-%abi%
 @cd buildsys-%abi%
