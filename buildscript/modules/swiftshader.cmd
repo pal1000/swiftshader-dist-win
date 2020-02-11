@@ -92,7 +92,9 @@
 @rem Configure and execute the build with the configuration made above.
 @echo Build configuration command: %buildconf%
 @echo.
+@IF NOT EXIST %devroot%\%projectname%\debug md %devroot%\%projectname%\debug
 @%buildconf%
+@rem %buildconf% > %devroot%\%projectname%\debug\cmake.txt 2>&1
 @echo.
 @pause
 @echo.
@@ -101,6 +103,7 @@
 @if /I NOT "%ninja%"=="y" if %abi%==x86 msbuild /p^:Configuration=release,Platform=Win32 INSTALL.vcxproj /m^:%throttle%
 @if /I NOT "%ninja%"=="y" if %abi%==x64 msbuild /p^:Configuration=release,Platform=x64 INSTALL.vcxproj /m^:%throttle%
 @if /I "%ninja%"=="y" ninja -j %throttle% install
+@rem if /I "%ninja%"=="y" ninja -t targets all > %devroot%\%projectname%\debug\ninja.txt 2>&1
 
 :skipbuild
 @echo.
