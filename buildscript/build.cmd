@@ -34,9 +34,6 @@
 @rem SwiftShader build.
 @call %devroot%\%projectname%\buildscript\modules\swiftshader.cmd
 
-@rem Binary resource editor
-@call %devroot%\%projectname%\buildscript\modules\resourcehacker.cmd
-
 @rem Dump build environment information
 @call %devroot%\%projectname%\buildscript\modules\envdump.cmd
 
