@@ -1,4 +1,5 @@
 /debug
 /dist/x86
 /dist/x64
+/dist/buildinfo
 /buildscript/assets
