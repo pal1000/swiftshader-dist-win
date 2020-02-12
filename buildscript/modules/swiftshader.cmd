@@ -74,6 +74,7 @@
 @IF /I NOT "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_SAMPLES=OFF -DSWIFTSHADER_BUILD_TESTS=OFF
 
 @set buildconf=%buildconf% ..\..
+@rem Debug code to get all build options
 @rem set buildconf=cmake -G Ninja -DCMAKE_INSTALL_PREFIX=../../../%projectname%/dist/%abi% -LAH ..\..
 
 @rem Ask if clean build is wanted
@@ -92,7 +93,7 @@
 @if /I "%ninja%"=="y" call %vsenv% %vsabi%
 @if /I "%ninja%"=="y" echo.
 
-@rem Configure and execute the build with the configuration made above.
+@rem Configure and execute the build with the configuration made above. Create debug file with all build options if wanted.
 @echo Build configuration command: %buildconf%
 @echo.
 @IF NOT EXIST %devroot%\%projectname%\debug md %devroot%\%projectname%\debug
@@ -103,9 +104,10 @@
 @echo.
 @if /I NOT "%ninja%"=="y" call %vsenv% %vsabi%
 @if /I NOT "%ninja%"=="y" echo.
-@if /I NOT "%ninja%"=="y" if %abi%==x86 msbuild /p^:Configuration=release,Platform=Win32 INSTALL.vcxproj /m^:%throttle%
-@if /I NOT "%ninja%"=="y" if %abi%==x64 msbuild /p^:Configuration=release,Platform=x64 INSTALL.vcxproj /m^:%throttle%
-@if /I "%ninja%"=="y" ninja -j %throttle% install
+@if /I NOT "%ninja%"=="y" if %abi%==x86 msbuild /p^:Configuration=release,Platform=Win32 swiftshader.sln /m^:%throttle%
+@if /I NOT "%ninja%"=="y" if %abi%==x64 msbuild /p^:Configuration=release,Platform=x64 swiftshader.sln /m^:%throttle%
+@if /I "%ninja%"=="y" ninja -j %throttle%
+@rem Debug code to list ninja targets.
 @rem if /I "%ninja%"=="y" ninja -t targets all > %devroot%\%projectname%\debug\ninja.txt 2>&1
 
 :skipbuild
