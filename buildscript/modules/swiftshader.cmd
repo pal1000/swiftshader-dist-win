@@ -63,10 +63,10 @@
 @IF /I "%subzerojit%"=="y" set buildconf=%buildconf% -DREACTOR_BACKEND=Subzero
 @IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DREACTOR_BACKEND=LLVM
 
-@set /p spirvtools=Include SPIRV-Tools in release - default^:no (y/n)^:
-@echo.
+@IF /I NOT "%vk-swiftshader%"=="n" set /p spirvtools=Include SPIRV-Tools in release - default^:no (y/n)^:
+@IF /I NOT "%vk-swiftshader%"=="n" echo.
 @IF /I "%spirvtools%"=="y" set buildconf=%buildconf% -DSKIP_SPIRV_TOOLS_INSTALL=OFF
-@IF /I NOT "%spirvtools%"=="y" set buildconf=%buildconf% -DSKIP_SPIRV_TOOLS_INSTALL=ON
+@IF /I NOT "%vk-swiftshader%"=="n" IF /I NOT "%spirvtools%"=="y" set buildconf=%buildconf% -DSKIP_SPIRV_TOOLS_INSTALL=ON
 
 @set /p test-swiftshader=Build SwiftShader tests and samples - default^:no (y/n)^:
 @echo.
