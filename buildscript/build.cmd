@@ -36,6 +36,3 @@
 
 @rem Dump build environment information
 @call %devroot%\%projectname%\buildscript\modules\envdump.cmd
-
-@rem Create distribution
-@call %devroot%\%projectname%\buildscript\modules\dist.cmd

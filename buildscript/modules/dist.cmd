@@ -1,11 +1,5 @@
 @setlocal
 @rem Create distribution.
-@if NOT EXIST %devroot%\%projectname:~0,-9%\build\buildsys-%abi% GOTO exit
-@set /p dist=Create or update distribution package (y/n):
-@echo.
-@if /I NOT "%dist%"=="y" GOTO exit
-@cd %devroot%
-
 @IF NOT EXIST %devroot%\%projectname%\dist md %devroot%\%projectname%\dist
 @IF NOT EXIST %devroot%\%projectname%\dist\%abi% md %devroot%\%projectname%\dist\%abi%
 @IF NOT EXIST %devroot%\%projectname%\dist\%abi%\bin md %devroot%\%projectname%\dist\%abi%\bin
@@ -16,9 +10,6 @@
 @md translator
 @move *translator.dll translator
 @echo.
-
-:exit
 @endlocal
 @cd %devroot%
 @pause
-@exit

@@ -112,6 +112,8 @@
 @if /I "%ninja%"=="y" IF /I "%spirvtools%"=="y" ninja -j %throttle% install
 @rem Debug code to list ninja targets.
 @rem if /I "%ninja%"=="y" ninja -t targets all > %devroot%\%projectname%\debug\ninja.txt 2>&1
+@echo.
+@call %devroot%\%projectname%\buildscript\modules\dist.cmd
 
 :skipbuild
 @echo.
