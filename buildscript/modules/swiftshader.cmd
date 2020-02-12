@@ -104,9 +104,12 @@
 @echo.
 @if /I NOT "%ninja%"=="y" call %vsenv% %vsabi%
 @if /I NOT "%ninja%"=="y" echo.
-@if /I NOT "%ninja%"=="y" if %abi%==x86 msbuild /p^:Configuration=release,Platform=Win32 swiftshader.sln /m^:%throttle%
-@if /I NOT "%ninja%"=="y" if %abi%==x64 msbuild /p^:Configuration=release,Platform=x64 swiftshader.sln /m^:%throttle%
-@if /I "%ninja%"=="y" ninja -j %throttle%
+@if /I NOT "%ninja%"=="y" IF /I NOT "%spirvtools%"=="y" if %abi%==x86 msbuild -p^:Configuration=release,Platform=Win32 swiftshader.sln -m^:%throttle%
+@if /I NOT "%ninja%"=="y" IF /I NOT "%spirvtools%"=="y" if %abi%==x64 msbuild -p^:Configuration=release,Platform=x64 swiftshader.sln -m^:%throttle%
+@if /I NOT "%ninja%"=="y" IF /I "%spirvtools%"=="y" if %abi%==x86 msbuild -p^:Configuration=release,Platform=Win32 INSTALL.vcxproj -m^:%throttle%
+@if /I NOT "%ninja%"=="y" IF /I "%spirvtools%"=="y" if %abi%==x64 msbuild -p^:Configuration=release,Platform=x64 INSTALL.vcxproj -m^:%throttle%
+@if /I "%ninja%"=="y" IF /I NOT "%spirvtools%"=="y" ninja -j %throttle%
+@if /I "%ninja%"=="y" IF /I "%spirvtools%"=="y" ninja -j %throttle% install
 @rem Debug code to list ninja targets.
 @rem if /I "%ninja%"=="y" ninja -t targets all > %devroot%\%projectname%\debug\ninja.txt 2>&1
 
