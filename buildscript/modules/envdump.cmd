@@ -53,4 +53,5 @@
 
 :skipenvdump
 @endlocal
+@pause
 @exit
