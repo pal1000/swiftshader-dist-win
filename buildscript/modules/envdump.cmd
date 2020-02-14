@@ -17,7 +17,16 @@
 @echo Windows %winver%>>%devroot%\%projectname%\dist\buildinfo\msvc.txt
 
 @rem Dump 7-Zip version and compression level
-@IF EXIST %devroot%\%projectname%\buildscript\assets\sevenzip.txt set /p sevenzipver=<%devroot%\%projectname%\buildscript\assets\sevenzip.txt
+@set sevenzpath=1
+@set ERRORLEVEL=0
+@where /q 7z.exe
+@IF ERRORLEVEL 1 set sevenzpath=0
+@IF %sevenzpath% EQU 1 set exitloop=1
+@IF %sevenzpath% EQU 1 FOR /F "tokens=2 USEBACKQ delims= " %%a IN (`7z.exe 2^>^&1`) DO @IF defined exitloop (
+set "exitloop="
+SET sevenzipver=%%a
+)
+@IF NOT defined sevenzipver IF EXIST %devroot%\%projectname%\buildscript\assets\sevenzip.txt set /p sevenzipver=<%devroot%\%projectname%\buildscript\assets\sevenzip.txt
 @IF defined sevenzipver echo 7-Zip %sevenzipver%>>%devroot%\%projectname%\dist\buildinfo\msvc.txt
 
 @rem Get Git version
