@@ -1,0 +1,16 @@
+@set x64=n
+@set pyselect=1
+@set enableenvdump=n
+@set pyupd=n
+@set buildswiftshader=y
+@set srcupd=n
+@set ninja=n
+@set vk-swiftshader=y
+@set gles-swiftshader=y
+@set subzerojit=y
+@set spirvtools=y
+@set test-swiftshader=n
+@set cleanbuild=y
+@set throttle=%NUMBER_OF_PROCESSORS%
+@set selecttoolchain=1
+@set addvcpp=n
