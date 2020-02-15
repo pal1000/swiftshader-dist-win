@@ -1,1 +1,1 @@
-This project is still under preparation.
+This project is still under preparation. It will be usable when reaching 1.0 release and become user friendly at version 1.1. Check [development roadmap](https://github.com/pal1000/swiftshader-dist-win/blob/master/roadmap.md) for detailed progress.
