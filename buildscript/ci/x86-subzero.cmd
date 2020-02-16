@@ -1,7 +1,20 @@
+@rem modules\abi.cmd
 @set x64=n
+
+@rem modules\toolchain.cmd
+@set selecttoolchain=1
+@set addvcpp=n
+
+@rem modules\discoverpython.cmd
 @set pyselect=1
-@set enableenvdump=n
+
+@rem modules\pythonpackages.cmd
 @set pyupd=n
+
+@rem modules\throttle.cmd
+@set throttle=%NUMBER_OF_PROCESSORS%
+
+@rem modules\swiftshader.cmd
 @set buildswiftshader=y
 @set srcupd=n
 @set ninja=n
@@ -11,6 +24,6 @@
 @set spirvtools=y
 @set test-swiftshader=n
 @set cleanbuild=y
-@set throttle=%NUMBER_OF_PROCESSORS%
-@set selecttoolchain=1
-@set addvcpp=n
+
+@rem modules\envdump.cmd
+@set enableenvdump=n
