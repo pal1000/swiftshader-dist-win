@@ -89,6 +89,17 @@
 @IF NOT EXIST buildsys-%abi% md buildsys-%abi%
 @cd buildsys-%abi%
 
+@rem Generate build perform command
+@if /I NOT "%ninja%"=="y" if %abi%==x86 set buildcmd=msbuild -p^:Configuration^=release,Platform^=Win32
+@if /I NOT "%ninja%"=="y" if %abi%==x64 set buildcmd=msbuild -p^:Configuration^=release,Platform^=x64
+@if /I NOT "%ninja%"=="y" IF /I "%spirvtools%"=="y" set buildcmd=%buildcmd% INSTALL.vcxproj
+@if /I NOT "%ninja%"=="y" IF /I NOT "%spirvtools%"=="y" set buildcmd=%buildcmd% swiftshader.sln
+@if /I NOT "%ninja%"=="y" set buildcmd=%buildcmd% -m^:%throttle%
+@if /I "%ninja%"=="y" set buildcmd=ninja -j %throttle%
+@if /I "%ninja%"=="y" IF /I "%spirvtools%"=="y" set buildcmd=%buildcmd% install
+@rem Debug code to list ninja targets.
+@rem if /I "%ninja%"=="y" set buildcmd=ninja -t targets all
+
 @rem Load Visual Studio environment early when using Ninja.
 @if /I "%ninja%"=="y" call %vsenv% %vsabi%
 @if /I "%ninja%"=="y" echo.
@@ -104,14 +115,10 @@
 @echo.
 @if /I NOT "%ninja%"=="y" call %vsenv% %vsabi%
 @if /I NOT "%ninja%"=="y" echo.
-@if /I NOT "%ninja%"=="y" IF /I NOT "%spirvtools%"=="y" if %abi%==x86 msbuild -p^:Configuration=release,Platform=Win32 swiftshader.sln -m^:%throttle%
-@if /I NOT "%ninja%"=="y" IF /I NOT "%spirvtools%"=="y" if %abi%==x64 msbuild -p^:Configuration=release,Platform=x64 swiftshader.sln -m^:%throttle%
-@if /I NOT "%ninja%"=="y" IF /I "%spirvtools%"=="y" if %abi%==x86 msbuild -p^:Configuration=release,Platform=Win32 INSTALL.vcxproj -m^:%throttle%
-@if /I NOT "%ninja%"=="y" IF /I "%spirvtools%"=="y" if %abi%==x64 msbuild -p^:Configuration=release,Platform=x64 INSTALL.vcxproj -m^:%throttle%
-@if /I "%ninja%"=="y" IF /I NOT "%spirvtools%"=="y" ninja -j %throttle%
-@if /I "%ninja%"=="y" IF /I "%spirvtools%"=="y" ninja -j %throttle% install
-@rem Debug code to list ninja targets.
-@rem if /I "%ninja%"=="y" ninja -t targets all > %devroot%\%projectname%\debug\ninja.txt 2>&1
+@echo Build execution command: %buildcmd%
+@echo.
+@%buildcmd%
+@rem %buildcmd% > %devroot%\%projectname%\debug\ninja.txt 2>&1
 @echo.
 @call %devroot%\%projectname%\buildscript\modules\dist.cmd
 
