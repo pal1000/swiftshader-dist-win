@@ -1,3 +1,6 @@
+@echo BUILDING SWIFTSHADER WITH SUBZERO BACKEND FOR X86 ARHITECTURE
+@echo -------------------------------------------------------------
+
 @rem modules\abi.cmd
 @set x64=n
 

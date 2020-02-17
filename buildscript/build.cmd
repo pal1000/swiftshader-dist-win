@@ -41,3 +41,7 @@
 
 @rem Dump build environment information
 @call %devroot%\%projectname%\buildscript\modules\envdump.cmd
+
+@IF %cimode% EQU 1 echo Build job %1 completed successfully.
+@IF %cimode% EQU 1 echo -----------------------------------------
+@IF %cimode% EQU 1 echo.

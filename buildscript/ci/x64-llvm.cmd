@@ -1,3 +1,6 @@
+@echo BUILDING SWIFTSHADER WITH LLVM BACKEND FOR X64 ARHITECTURE
+@echo ----------------------------------------------------------
+
 @rem modules\abi.cmd
 @set x64=y
 
