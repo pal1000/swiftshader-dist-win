@@ -13,6 +13,7 @@
 
 @rem modules\pythonpackages.cmd
 @set pyupd=n
+@IF EXIST %devroot%\%projectname%\buildscript\assets\ciparallel.* set pyupd=y
 
 @rem modules\throttle.cmd
 @set throttle=%NUMBER_OF_PROCESSORS%
@@ -30,3 +31,4 @@
 
 @rem modules\envdump.cmd
 @set enableenvdump=n
+@IF EXIST %devroot%\%projectname%\buildscript\assets\ciparallel.* set enableenvdump=y
