@@ -14,35 +14,37 @@
 @set toolset=0
 
 @set totalmsvc=0
-@IF EXIST %vswhere% for /F "USEBACKQ tokens=*" %%a IN (`%vswhere% -prerelease -property catalog_productDisplayVersion`) do @set /a totalmsvc+=1&set msvcversions[!totalmsvc!]=%%a
+@IF EXIST %vswhere% for /F "USEBACKQ tokens=*" %%a IN (`%vswhere% -prerelease -property catalog_productDisplayVersion 2^>^&1`) do @set /a totalmsvc+=1&set msvcversions[!totalmsvc!]=%%a
 @set msvccount=0
-@IF EXIST %vswhere% for /F "USEBACKQ tokens=*" %%a IN (`%vswhere% -prerelease -property displayName`) do @set /a msvccount+=1&set msvcnames[!msvccount!]=%%a
-@cls
+@IF EXIST %vswhere% for /F "USEBACKQ tokens=*" %%a IN (`%vswhere% -prerelease -property displayName 2^>^&1`) do @set /a msvccount+=1&set msvcnames[!msvccount!]=%%a
+@IF %cimode% EQU 0 cls
 @IF %totalmsvc% GTR 0 FOR /L %%a IN (1,1,%totalmsvc%) do @echo %%a.!msvcnames[%%a]! v!msvcversions[%%a]!
 @echo.
 @IF %totalmsvc%==0 (
 @echo Error: No compiler found. Cannot continue.
 @echo.
-@pause
+@IF %cimode% EQU 0 pause
 @exit
 )
 
 @rem Select compiler
-@set selecttoolchain=0
-@set /p selecttoolchain=Select compiler:
+@IF %cimode% EQU 0 set /p selecttoolchain=Select compiler:
+@IF %cimode% EQU 1 echo Select compiler:%selecttoolchain%
 @echo.
 @set validtoolchain=1
 @IF "%selecttoolchain%"=="" (
 @echo Invalid entry
-@pause
-@GOTO findcompilers
+@IF %cimode% EQU 0 pause
+@IF %cimode% EQU 0 GOTO findcompilers
+@IF %cimode% EQU 1 exit
 )
 @IF %selecttoolchain% LEQ 0 set validtoolchain=0
 @IF %selecttoolchain% GTR %totalmsvc% set validtoolchain=0
 @IF %validtoolchain%==0 (
 @echo Invalid entry
-@pause
-@GOTO findcompilers
+@IF %cimode% EQU 0 pause
+@IF %cimode% EQU 0 GOTO findcompilers
+@IF %cimode% EQU 1 exit
 )
 
 @rem Determine version and build enviroment launcher PATH for selected Visual Studio installation
@@ -55,10 +57,12 @@ set msvcver=!msvcversions[%%a]!
 
 :novcpp
 @IF NOT EXIST %vsenv% echo Error: Selected Visual Studio installation lacks Desktop development with C++ workload necessary to build swiftshader.
-@IF NOT EXIST %vsenv% set /p addvcpp=Add Desktop development with C++ workload - y/n:
+@IF NOT EXIST %vsenv% IF %cimode% EQU 0 set /p addvcpp=Add Desktop development with C++ workload - y/n:
+@IF NOT EXIST %vsenv% IF %cimode% EQU 1 echo Add Desktop development with C++ workload - y/n:%addvcpp%
 @IF NOT EXIST %vsenv% echo.
-@IF NOT EXIST %vsenv% IF /I NOT "%addvcpp%"=="y" pause
-@IF NOT EXIST %vsenv% IF /I NOT "%addvcpp%"=="y" GOTO findcompilers
+@IF NOT EXIST %vsenv% IF /I NOT "%addvcpp%"=="y" IF %cimode% EQU 0 pause
+@IF NOT EXIST %vsenv% IF /I NOT "%addvcpp%"=="y" IF %cimode% EQU 0 GOTO findcompilers
+@IF NOT EXIST %vsenv% IF /I NOT "%addvcpp%"=="y" IF %cimode% EQU 1 exit
 @IF NOT EXIST %vsenv% %vswhere:~0,-12%vs_installer.exe"
 @IF NOT EXIST %vsenv% GOTO findcompilers
 

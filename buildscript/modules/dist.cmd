@@ -12,4 +12,4 @@
 @echo.
 @endlocal
 @cd %devroot%
-@pause
+@IF %cimode% EQU 0 pause

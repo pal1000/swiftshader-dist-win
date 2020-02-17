@@ -10,29 +10,34 @@
 )
 
 @rem Ask to do swiftshader build
-@set /p buildswiftshader=Build SwiftShader (y/n):
+@IF %cimode% EQU 0 set /p buildswiftshader=Build SwiftShader (y/n):
+@IF %cimode% EQU 1 echo Build SwiftShader (y/n):%buildswiftshader%
 @echo.
 @IF /I NOT "%buildswiftshader%"=="y" GOTO skipbuild
 
 @rem Get swiftshader source code if missing
-@IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader (
+@IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader IF %cimode% EQU 0 (
 @git clone --recurse-submodules https://github.com/google/swiftshader.git %devroot%\swiftshader
 @echo.
 )
+@IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader IF %cimode% EQU 1 GOTO skipbuild
 @cd /d %devroot%\swiftshader
-@IF NOT EXIST build md build
-@cd build
 
 @rem Ask to update source code if git is available
-@IF %gitstate% GTR 0 set /p srcupd=Update SwiftShader source code (y/n):
+@IF %gitstate% GTR 0 IF %cimode% EQU 0 set /p srcupd=Update SwiftShader source code (y/n):
+@IF %gitstate% GTR 0 IF %cimode% EQU 1 echo Update SwiftShader source code (y/n):%srcupd%
 @IF %gitstate% GTR 0 echo.
 @IF /I "%srcupd%"=="y" git pull -v --progress origin
 @IF /I "%srcupd%"=="y" echo.
 @IF /I "%srcupd%"=="y" git submodule update --init --recursive
 @IF /I "%srcupd%"=="y" echo.
 
+@IF NOT EXIST build md build
+@cd build
+
 @rem Ask for Ninja use if exists. Load it if opted for it.
-@if NOT %ninjastate%==0 set /p ninja=Use Ninja build system instead of MsBuild (y/n); less storage device strain, faster and more efficient build:
+@if NOT %ninjastate%==0 IF %cimode% EQU 0 set /p ninja=Use Ninja build system instead of MsBuild (y/n); less storage device strain, faster and more efficient build:
+@if NOT %ninjastate%==0 IF %cimode% EQU 1 echo Use Ninja build system instead of MsBuild (y/n); less storage device strain, faster and more efficient build:%ninja%
 @if NOT %ninjastate%==0 echo.
 @if /I "%ninja%"=="y" if %ninjastate%==1 set PATH=%devroot%\ninja\;%PATH%
 
@@ -48,27 +53,32 @@
 @if /I "%ninja%"=="y" set buildconf=%buildconf% "Ninja"
 @set buildconf=%buildconf% -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../../../%projectname%/dist/%abi% -DSWIFTSHADER_WARNINGS_AS_ERRORS=OFF
 
-@set /p vk-swiftshader=Build SwiftShader Vulkan Driver - default^:yes (y/n)^:
+@IF %cimode% EQU 0 set /p vk-swiftshader=Build SwiftShader Vulkan Driver - default^:yes (y/n)^:
+@IF %cimode% EQU 1 echo Build SwiftShader Vulkan Driver - default^:yes (y/n)^:%vk-swiftshader%
 @echo.
 @IF /I "%vk-swiftshader%"=="n" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_VULKAN=OFF
 @IF /I NOT "%vk-swiftshader%"=="n" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_VULKAN=ON
 
-@set /p gles-swiftshader=Build SwiftShader GLES Drivers - default^:no (y/n)^:
+@IF %cimode% EQU 0 set /p gles-swiftshader=Build SwiftShader GLES Drivers - default^:no (y/n)^:
+@IF %cimode% EQU 1 echo Build SwiftShader GLES Drivers - default^:no (y/n)^:%gles-swiftshader%
 @echo.
 @IF /I "%gles-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_EGL=ON -DSWIFTSHADER_BUILD_GLES_CM=ON -DSWIFTSHADER_BUILD_GLESv2=ON
 @IF /I NOT "%gles-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_EGL=OFF -DSWIFTSHADER_BUILD_GLES_CM=OFF -DSWIFTSHADER_BUILD_GLESv2=OFF
 
-@set /p subzerojit=Use Subzero JIT instead of LLVM - default^:no (y/n)^:
+@IF %cimode% EQU 0 set /p subzerojit=Use Subzero JIT instead of LLVM - default^:no (y/n)^:
+@IF %cimode% EQU 1 echo Use Subzero JIT instead of LLVM - default^:no (y/n)^:%subzerojit%
 @echo.
 @IF /I "%subzerojit%"=="y" set buildconf=%buildconf% -DREACTOR_BACKEND=Subzero
 @IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DREACTOR_BACKEND=LLVM
 
-@IF /I NOT "%vk-swiftshader%"=="n" set /p spirvtools=Include SPIRV-Tools in release - default^:no (y/n)^:
+@IF /I NOT "%vk-swiftshader%"=="n" IF %cimode% EQU 0 set /p spirvtools=Include SPIRV-Tools in release - default^:no (y/n)^:
+@IF /I NOT "%vk-swiftshader%"=="n" IF %cimode% EQU 1 echo Include SPIRV-Tools in release - default^:no (y/n)^:%spirvtools%
 @IF /I NOT "%vk-swiftshader%"=="n" echo.
 @IF /I "%spirvtools%"=="y" set buildconf=%buildconf% -DSKIP_SPIRV_TOOLS_INSTALL=OFF
 @IF /I NOT "%vk-swiftshader%"=="n" IF /I NOT "%spirvtools%"=="y" set buildconf=%buildconf% -DSKIP_SPIRV_TOOLS_INSTALL=ON
 
-@set /p test-swiftshader=Build SwiftShader tests and samples - default^:no (y/n)^:
+@IF %cimode% EQU 0 set /p test-swiftshader=Build SwiftShader tests and samples - default^:no (y/n)^:
+@IF %cimode% EQU 1 echo Build SwiftShader tests and samples - default^:no (y/n)^:%test-swiftshader%
 @echo.
 @IF /I "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_SAMPLES=ON -DSWIFTSHADER_BUILD_TESTS=ON
 @IF /I NOT "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_SAMPLES=OFF -DSWIFTSHADER_BUILD_TESTS=OFF
@@ -78,7 +88,8 @@
 @rem set buildconf=cmake -G Ninja -DCMAKE_INSTALL_PREFIX=../../../%projectname%/dist/%abi% -LAH ..\..
 
 @rem Ask if clean build is wanted
-@set /p cleanbuild=Do you want to clean build (y/n):
+@IF %cimode% EQU 0 set /p cleanbuild=Do you want to clean build (y/n):
+@IF %cimode% EQU 1 echo Do you want to clean build (y/n):%cleanbuild%
 @echo.
 @IF /I "%cleanbuild%"=="y" (
 @echo Cleanning build...
@@ -95,6 +106,7 @@
 @if /I NOT "%ninja%"=="y" IF /I "%spirvtools%"=="y" set buildcmd=%buildcmd% INSTALL.vcxproj
 @if /I NOT "%ninja%"=="y" IF /I NOT "%spirvtools%"=="y" set buildcmd=%buildcmd% swiftshader.sln
 @if /I NOT "%ninja%"=="y" set buildcmd=%buildcmd% -m^:%throttle%
+@if /I NOT "%ninja%"=="y" IF %cimode% EQU 1 set buildcmd=%buildcmd% -v:m
 @if /I "%ninja%"=="y" set buildcmd=ninja -j %throttle%
 @if /I "%ninja%"=="y" IF /I "%spirvtools%"=="y" set buildcmd=%buildcmd% install
 @rem Debug code to list ninja targets.
@@ -104,15 +116,15 @@
 @if /I "%ninja%"=="y" call %vsenv% %vsabi%
 @if /I "%ninja%"=="y" echo.
 
-@rem Configure and execute the build with the configuration made above. Create debug file with all build options if wanted.
+@rem Configure and execute the build with the configuration set above. Create debug file with all build options if wanted.
 @echo Build configuration command: %buildconf%
 @echo.
 @IF NOT EXIST %devroot%\%projectname%\debug md %devroot%\%projectname%\debug
 @%buildconf%
 @rem %buildconf% > %devroot%\%projectname%\debug\cmake.txt 2>&1
 @echo.
-@pause
-@echo.
+@IF %cimode% EQU 0 pause
+@IF %cimode% EQU 0 echo.
 @if /I NOT "%ninja%"=="y" call %vsenv% %vsabi%
 @if /I NOT "%ninja%"=="y" echo.
 @echo Build execution command: %buildcmd%

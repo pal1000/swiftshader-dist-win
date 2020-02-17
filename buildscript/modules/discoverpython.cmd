@@ -12,7 +12,8 @@
 
 :pylist
 @set pythontotal=0
-@cls
+@IF %cimode% EQU 0 cls
+@IF %cimode% EQU 1 echo.
 
 @rem Count supported python installations
 @FOR /F "USEBACKQ tokens=1 skip=1" %%a IN (`py -0 2^>nul`) do @(
@@ -32,17 +33,21 @@
 @IF !pythoninstance^:^~1^,-3! GEQ 3.5 echo !pythoncount!. Python !pythoninstance:~1,-3! !pythoninstance:~-2! bit
 )
 @echo.
-@set /p pyselect=Select Python version by entering its index from the table above:
+@IF %cimode% EQU 0 set /p pyselect=Select Python version by entering its index from the table above:
+@IF %cimode% EQU 1 echo Select Python version by entering its index from the table above:%pyselect%
 @echo.
 @IF "%pyselect%"=="" echo Invalid entry.
-@IF "%pyselect%"=="" pause
-@IF "%pyselect%"=="" GOTO pylist
+@IF "%pyselect%"=="" IF %cimode% EQU 0 pause
+@IF "%pyselect%"=="" IF %cimode% EQU 0 GOTO pylist
+@IF "%pyselect%"=="" IF %cimode% EQU 1 exit
 @IF %pyselect% LEQ 0 echo Invalid entry.
-@IF %pyselect% LEQ 0 pause
-@IF %pyselect% LEQ 0 GOTO pylist
+@IF %pyselect% LEQ 0 IF %cimode% EQU 0 pause
+@IF %pyselect% LEQ 0 IF %cimode% EQU 0 GOTO pylist
+@IF %pyselect% LEQ 0 IF %cimode% EQU 1 exit
 @IF %pyselect% GTR %pythontotal% echo Invalid entry.
-@IF %pyselect% GTR %pythontotal% pause
-@IF %pyselect% GTR %pythontotal% GOTO pylist
+@IF %pyselect% GTR %pythontotal% IF %cimode% EQU 0 pause
+@IF %pyselect% GTR %pythontotal% IF %cimode% EQU 0 GOTO pylist
+@IF %pyselect% GTR %pythontotal% IF %cimode% EQU 1 exit
 
 @rem Locate selected Python installation
 @set pythoncount=0
@@ -63,10 +68,14 @@
 @IF %pythonloc%==%devroot%\python\python.exe IF NOT EXIST %pythonloc% (
 @echo Python is unreachable. Cannot continue.
 @echo.
-@pause
+@IF %cimode% EQU 0 pause
 @exit
 )
-@IF %pythonloc%==python.exe set exitloop=1&FOR /F "tokens=* USEBACKQ" %%a IN (`where /f python.exe`) DO @IF defined exitloop set "exitloop="&SET pythonloc=%%~sa
+@IF %pythonloc%==python.exe set exitloop=1
+@IF %pythonloc%==python.exe FOR /F "tokens=* USEBACKQ" %%a IN (`where /f python.exe`) DO @IF defined exitloop (
+set "exitloop="
+SET pythonloc=%%~sa
+)
 
 :loadpypath
 @REM Load Python in PATH to convince CMake to use the selected version and avoid other potential problems.
@@ -74,7 +83,11 @@
 @set pypath=1
 @where /q python.exe
 @IF ERRORLEVEL 1 set pypath=0
-@IF %pypath%==1 set exitloop=1&FOR /F "tokens=* USEBACKQ" %%a IN (`where /f python.exe`) DO @IF defined exitloop set "exitloop="&SET pypath=%%~sa
+@IF %pypath%==1 set exitloop=1
+@IF %pypath%==1 FOR /F "tokens=* USEBACKQ" %%a IN (`where /f python.exe`) DO @IF defined exitloop (
+set "exitloop="
+SET pypath=%%~sa
+)
 @IF NOT %pypath%==%pythonloc% set PATH=%pythonloc:~0,-10%;%pythonloc:~0,-10%Scripts\;%PATH%
 
 :pyver
@@ -86,7 +99,7 @@
 @IF %pythonver% LSS 3.5 (
 @echo Your Python version is too old. Only Python 3.5 and newer are supported.
 @echo.
-@pause
+@IF %cimode% EQU 0 pause
 @exit
 )
 @echo Using Python %fpythonver% from %pythonloc%.

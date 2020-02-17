@@ -8,6 +8,11 @@
 
 @set projectname=swiftshader-dist-win
 
+@rem Detect and activate ci mode
+@set cimode=0
+@IF NOT "%1"=="" set cimode=1
+@IF %cimode% EQU 1 call %devroot%\%projectname%\buildscript\ci\%1.cmd
+
 @rem Select target architecture
 @call %devroot%\%projectname%\buildscript\modules\abi.cmd
 
