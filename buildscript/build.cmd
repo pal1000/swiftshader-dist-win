@@ -43,5 +43,8 @@
 @call %devroot%\%projectname%\buildscript\modules\envdump.cmd
 
 @IF %cimode% EQU 1 echo Build job %1 completed successfully.
-@IF %cimode% EQU 1 echo -----------------------------------------
+@IF "%1"=="x86-llvm" echo ------------------------------------------
+@IF "%1"=="x64-llvm" echo ------------------------------------------
+@IF "%1"=="x86-subzero" echo ---------------------------------------------
+@IF "%1"=="x64-subzero" echo ---------------------------------------------
 @IF %cimode% EQU 1 echo.
