@@ -6,7 +6,7 @@
 - [x] implement manual build options configuration,
 ### Automatic build configuration (v0.2)
 - [x] write build configuratiion profiles;
-- [ ] implement CI mode in which pauses and screen clears are skipped and questions have answears pre-filled.
+- [x] implement CI mode in which pauses and screen clears are skipped and questions have answears pre-filled.
 ### Spawn buildbot (v1.0)
 Write CI script that:
 - [ ] gets swiftshader and this repository source code;
