@@ -6,9 +6,7 @@
 @echo.
 @if /I NOT "%pyupd%"=="y" GOTO endpython
 @set pywinsetup=2
-@set ERRORLEVEL=0
-@FOR /F "USEBACKQ delims= " %%a IN (`%pythonloc% -c "import sys; print(str(sys.version_info[0])+'.'+str(sys.version_info[1]))"`) DO @REG QUERY HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\pywin32-py%%a >nul 2>&1
-@IF ERRORLEVEL 1 set pywinsetup=1
+@IF NOT EXIST %pythonloc:~0,-10%Removepywin32.exe set pywinsetup=1
 @FOR /F "USEBACKQ delims= " %%a IN (`%pythonloc% -c "import sys; print(str(sys.version_info[0])+str(sys.version_info[1]))"`) DO @IF NOT EXIST "%windir%\system32\pythoncom%%a.dll" IF NOT EXIST "%windir%\syswow64\pythoncom%%a.dll" set pywinsetup=0
 @if EXIST "%LOCALAPPDATA%\pip" RD /S /Q "%LOCALAPPDATA%\pip"
 @for /F "skip=2 delims= " %%a in ('%pythonloc% -W ignore -m pip list -o --disable-pip-version-check') do @(
