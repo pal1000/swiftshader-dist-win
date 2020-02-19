@@ -1,3 +1,4 @@
+@echo ----------------------------------------------------------
 @echo BUILDING SWIFTSHADER WITH LLVM BACKEND FOR X86 ARHITECTURE
 @echo ----------------------------------------------------------
 

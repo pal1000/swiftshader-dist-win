@@ -1,3 +1,4 @@
+@echo -------------------------------------------------------------
 @echo BUILDING SWIFTSHADER WITH SUBZERO BACKEND FOR X64 ARHITECTURE
 @echo -------------------------------------------------------------
 

@@ -42,6 +42,10 @@
 @rem Dump build environment information
 @call %devroot%\%projectname%\buildscript\modules\envdump.cmd
 
+@IF "%1"=="x86-llvm" echo ------------------------------------------
+@IF "%1"=="x64-llvm" echo ------------------------------------------
+@IF "%1"=="x86-subzero" echo ---------------------------------------------
+@IF "%1"=="x64-subzero" echo ---------------------------------------------
 @IF %cimode% EQU 1 echo Build job %1 completed successfully.
 @IF "%1"=="x86-llvm" echo ------------------------------------------
 @IF "%1"=="x64-llvm" echo ------------------------------------------
