@@ -106,8 +106,7 @@
 @if /I NOT "%ninja%"=="y" IF /I "%spirvtools%"=="y" set buildcmd=%buildcmd% INSTALL.vcxproj
 @if /I NOT "%ninja%"=="y" IF /I NOT "%spirvtools%"=="y" set buildcmd=%buildcmd% swiftshader.sln
 @if /I NOT "%ninja%"=="y" set buildcmd=%buildcmd% -m^:%throttle%
-@rem if /I NOT "%ninja%"=="y" IF %cimode% EQU 0 set buildcmd=%buildcmd% -v:m
-@if /I NOT "%ninja%"=="y" IF %cimode% EQU 1 set buildcmd=%buildcmd% -v:q
+@if /I NOT "%ninja%"=="y" set buildcmd=%buildcmd% -v^:m
 @if /I "%ninja%"=="y" set buildcmd=ninja -j %throttle%
 @if /I "%ninja%"=="y" IF /I "%spirvtools%"=="y" set buildcmd=%buildcmd% install
 @rem Debug code to list ninja targets.
