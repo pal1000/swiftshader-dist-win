@@ -1,0 +1,2 @@
+git clone --depth=1 --branch=master https://github.com/google/swiftshader c:\projects\swiftshader
+git clone --depth=1 --branch=master https://github.com/pal1000/swiftshader-dist-win c:\projects\swiftshader-dist-win

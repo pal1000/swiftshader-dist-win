@@ -1,0 +1,11 @@
+c:\projects\swiftshader-dist-win\buildscript\ci\timestamp.cmd
+c:\projects\swiftshader-dist-win\buildscript\build.cmd x64-llvm
+c:\projects\swiftshader-dist-win\buildscript\build.cmd x86-llvm
+cd c:\projects\swiftshader-dist-win\dist
+IF EXIST x86\bin\libEGL.dll IF EXIST x64\bin\libEGL.dll IF EXIST x86\bin\vk_swiftshader.dll IF EXIST x64\bin\vk_swiftshader.dll IF EXIST x86\bin\vk_swiftshader_icd.json IF EXIST x64\bin\vk_swiftshader_icd.json 7z a ..\swiftshader-%artifactuid%-LLVM.zip .\*
+IF EXIST c:\projects\swiftshader-dist-win\swiftshader-%artifactuid%-LLVM.zip appveyor PushArtifact c:\projects\swiftshader-dist-win\swiftshader-%artifactuid%-LLVM.zip
+c:\projects\swiftshader-dist-win\buildscript\build.cmd x64-subzero
+c:\projects\swiftshader-dist-win\buildscript\build.cmd x86-subzero
+cd c:\projects\swiftshader-dist-win\dist
+IF EXIST x86\bin\libEGL.dll IF EXIST x64\bin\libEGL.dll IF EXIST x86\bin\vk_swiftshader.dll IF EXIST x64\bin\vk_swiftshader.dll IF EXIST x86\bin\vk_swiftshader_icd.json IF EXIST x64\bin\vk_swiftshader_icd.json 7z a ..\swiftshader-%artifactuid%-subzero.zip .\*
+IF EXIST c:\projects\swiftshader-dist-win\swiftshader-%artifactuid%-subzero.zip appveyor PushArtifact c:\projects\swiftshader-dist-win\swiftshader-%artifactuid%-subzero.zip
