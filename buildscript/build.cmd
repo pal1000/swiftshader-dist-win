@@ -37,10 +37,13 @@
 @call %devroot%\%projectname%\buildscript\modules\ninja.cmd
 
 @rem SwiftShader build.
-@call %devroot%\%projectname%\buildscript\modules\swiftshader.cmd
+@call %devroot%\%projectname%\buildscript\modules\%projectname:~0,-9%.cmd
 
 @rem Dump build environment information
 @call %devroot%\%projectname%\buildscript\modules\envdump.cmd
+
+@rem Purge build cache when using CI
+@IF %cimode% EQU 1 IF EXIST %devroot%\%projectname:~0,-9%\build\buildsys-x* RD /S /Q %devroot%\%projectname:~0,-9%\build\buildsys-x*
 
 @IF "%1"=="x86-llvm" echo ------------------------------------------
 @IF "%1"=="x64-llvm" echo ------------------------------------------
