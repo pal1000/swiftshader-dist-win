@@ -1,28 +1,24 @@
+:beginappveyor
 @set devroot=c:\projects
 @set projectname=swiftshader-dist-win
+@cd %devroot%\%projectname%
+@git checkout %1
 
-@IF /I %cijob%==init GOTO appveyor-init
+@echo %cijob%
+
+@IF /I %cijob%==init GOTO build-init
 @IF /I %cijob%==artifact-llvm GOTO artifact-llvm
 @IF /I %cijob%==artifact-subzero GOTO artifact-subzero
 @IF /I %cijob:~0,1%==x GOTO run-build
 
-:appveyor-init
+:build-init
 @rem Clean leftover binaries and build info data
 @IF EXIST %devroot%\%projectname%\dist\buildinfo RD /S /Q %devroot%\%projectname%\dist\buildinfo
 @IF EXIST %devroot%\%projectname%\dist\x??\ RD /S /Q %devroot%\%projectname%\dist\x??
+@IF EXIST %devroot%\%projectname%\dist\modules\uid.cmd del %devroot%\%projectname%\dist\modules\uid.cmd
 @rem Get swiftshader source code
 @git clone -q -n https://github.com/google/%projectname:~0,-9% %devroot%\%projectname:~0,-9%
 @rem Get / update build script source
-@IF NOT EXIST %devroot%\%projectname% (
-@set firstbuild=1
-@git clone -q --branch=master https://github.com/%APPVEYOR_ACCOUNT_NAME%/%projectname% %devroot%\%projectname%
-)
-@cd %devroot%\%projectname%
-@IF NOT defined firstbuild (
-@git checkout master
-@git pull
-)
-@git checkout %1
 @rem Configure build title
 @cd %devroot%\%projectname:~0,-9%
 @type %devroot%\%projectname%\buildscript\ci\appveyor.ps1 | powershell -NoLogo >nul 2>&1
@@ -35,11 +31,12 @@
 @IF NOT EXIST %devroot%\%projectname%\dist\modules md %devroot%\%projectname%\dist\modules
 @echo @set artifactuid=%artifactuid%>%devroot%\%projectname%\dist\modules\uid.cmd
 @echo @set artifactver=%artifactver%>>%devroot%\%projectname%\dist\modules\uid.cmd
-@FOR /F "tokens=*" %%a IN ('type %devroot%\%projectname:~0,-9%\.git\refs\heads\master') do @echo @set swiftshadercommit=%%a>>%devroot%\%projectname%\dist\modules\uid.cmd
+@FOR /F "tokens=*" %%a IN (`type %devroot%\%projectname:~0,-9%\.git\refs\heads\master`) do @echo @set swiftshadercommit=%%a>>%devroot%\%projectname%\dist\modules\uid.cmd
 @GOTO doneappveyor
 
 :run-build
-@type %devroot%\%projectname%\dist\modules\uid.cmd
+@IF EXIST %devroot%\%projectname%\dist\modules\uid.cmd FOR /F "tokens=*" %%a IN ('type %devroot%\%projectname%\dist\modules\uid.cmd') DO @echo %%a
+@dir %devroot%\%projectname%\dist
 @GOTO doneappveyor
 
 :artifact-llvm
