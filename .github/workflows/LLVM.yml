@@ -1,0 +1,29 @@
+name: LLVM
+
+on: push
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout build script repo
+      uses: actions/checkout@v2
+      with:
+        path: swiftshader-dist-win
+        ref: 'master'
+
+    - name: Checkout source code repo
+      uses: actions/checkout@v2
+      with:
+        repository: google/swiftshader
+        path: swiftshader
+        ref: 'master'
+
+    - name: Build swiftshader x64
+      shell: cmd
+      run: swiftshader-dist-win\buildscript\build.cmd x64-LLVM
+
+    - name: Build swiftshader x86
+      shell: cmd
+      run: swiftshader-dist-win\buildscript\build.cmd x86-LLVM
