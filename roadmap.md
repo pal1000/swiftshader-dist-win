@@ -9,9 +9,9 @@
 - [x] implement CI mode in which pauses and screen clears are skipped and questions have answears pre-filled.
 ### Spawn buildbot (v1.0)
 Write CI script that:
-- [ ] gets swiftshader and this repository source code;
+- [x] gets swiftshader and this repository source code;
 - [ ] execuute build with each configuratiion profile;
-- [ ] collects and publishes artifacts.
+- [x] collects and publishes artifacts.
 ### Usability improvements (v1.1)
 - [ ] link to Khronos document about Vulkan Loader ICD discovery in readme;
 - [ ] implemnt system-wide legacy type vulkan driver deployment;

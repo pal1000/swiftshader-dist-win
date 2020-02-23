@@ -20,10 +20,11 @@ jobs:
         path: swiftshader
         ref: 'master'
 
-    - name: Build swiftshader x64
+    - name: Build swiftshader
       shell: cmd
-      run: swiftshader-dist-win\buildscript\build.cmd x64-LLVM
+      run: swiftshader-dist-win\buildscript\ci\ci.cmd LLVM
 
-    - name: Build swiftshader x86
-      shell: cmd
-      run: swiftshader-dist-win\buildscript\build.cmd x86-LLVM
+    - name: Publish artifact
+      uses: actions/upload-artifact@konradpabjan/v2-is-almost-here
+      with:
+        path: swiftshader-dist-win\*.zip
