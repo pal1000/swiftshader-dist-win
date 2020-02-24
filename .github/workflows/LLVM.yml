@@ -20,6 +20,10 @@ jobs:
         path: swiftshader
         ref: 'master'
 
+    - name: Get swiftshader build script and source code repos commit IDs to decide if build is necessary
+      shell: cmd
+      run: swiftshader-dist-win\buildscript\ci\ci.cmd updcheck
+
     - name: Build swiftshader
       shell: cmd
       run: swiftshader-dist-win\buildscript\ci\ci.cmd LLVM
