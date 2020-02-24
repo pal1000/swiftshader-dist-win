@@ -27,4 +27,4 @@ jobs:
     - name: Publish artifact
       uses: actions/upload-artifact@konradpabjan/v2-is-almost-here
       with:
-        path: swiftshader-dist-win\*.zip
+        path: swiftshader-dist-win\*.7z
