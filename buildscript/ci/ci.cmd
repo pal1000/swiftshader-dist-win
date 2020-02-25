@@ -9,6 +9,9 @@
 @IF /I %1==updcheck IF NOT EXIST %devroot%\%projectname%\dist\ciasset md %devroot%\%projectname%\dist\ciasset
 @IF /I %1==updcheck FOR /F "tokens=*" %%a IN ('type %devroot%\%projectname:~0,-9%\.git\refs\heads\master') do @echo swiftshader-source-code=%%a>%devroot%\%projectname%\dist\ciasset\hashes.ini
 @IF /I %1==updcheck FOR /F tokens^=^*^ USEBACKQ^ eol^= %%a IN (`forfiles /p %devroot%\%projectname%\.git\refs\heads /C "cmd /c type @path"`) do @echo swiftshader-dist-win=%%a>>%devroot%\%projectname%\dist\ciasset\hashes.ini
+@IF /I %1==updcheck echo Diagnostic data to check if cache is working properly.
+@IF /I %1==updcheck echo ------------------------------------------------------
+@IF /I %1==updcheck type %devroot%\%projectname%\dist\ciasset\hashes.ini
 @IF /I %1==updcheck GOTO doneci
 
 @rem Generating version UID and artifact timestamp
