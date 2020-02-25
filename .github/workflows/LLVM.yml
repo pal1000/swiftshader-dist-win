@@ -2,7 +2,7 @@ name: LLVM
 
 on:
   schedule:
-    - cron:  '* */8 * * *'
+    - cron:  '15 2,10,18 * * *'
 
 jobs:
   build:
