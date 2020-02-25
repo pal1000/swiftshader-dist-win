@@ -1,4 +1,4 @@
-name: LLVM
+name: subzero
 
 on:
   schedule:
@@ -28,7 +28,7 @@ jobs:
 
     - name: Build swiftshader
       shell: cmd
-      run: swiftshader-dist-win\buildscript\ci\ci.cmd LLVM
+      run: swiftshader-dist-win\buildscript\ci\ci.cmd subzero
 
     # - name: Publish artifact
     #  uses: actions/upload-artifact@konradpabjan/v2-is-almost-here
