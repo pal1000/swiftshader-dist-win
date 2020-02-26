@@ -13,7 +13,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: swiftshader-dist-win
-        ref: '7d85e19baa3422bb57a6d6522f4af238f6c46b92'
+        ref: '46e2ccbfda43742d383f007a82b7265d8aad7cfa'
 
     - name: Checkout source code repo
       uses: actions/checkout@v2
