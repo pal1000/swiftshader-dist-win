@@ -22,7 +22,7 @@
 @echo -------------------
 @IF EXIST %devroot%\%projectname%\buildscript\ci\assets-old\hashes.ini type %devroot%\%projectname%\buildscript\ci\assets-old\hashes.ini
 @IF NOT EXIST %devroot%\%projectname%\buildscript\ci\assets-old\hashes.ini echo File not found - %devroot%\%projectname%\buildscript\ci\assets-old\hashes.ini. No previous build data available. Skip build support is disabled.
-@FC /B %devroot%\%projectname%\buildscript\ci\assets-old\hashes.ini %devroot%\%projectname%\buildscript\ci\assets\hashes.ini>NUL 2>&1 &&GOTO doneci
+@FC /B %devroot%\%projectname%\buildscript\ci\assets-old\hashes.ini %devroot%\%projectname%\buildscript\ci\assets\hashes.ini>NUL 2>&1 &&GOTO skipci
 @cd %devroot%
 
 @rem Generating version UID and artifact timestamp
@@ -41,6 +41,11 @@
 @IF EXIST x64\bin\vk_swiftshader_icd.json IF EXIST x64\bin\libEGL.dll IF EXIST x64\bin\vk_swiftshader.dll call %devroot%\%projectname%\buildscript\build.cmd x86-%1
 @cd %devroot%\%projectname%\dist
 @IF EXIST x64\bin\vk_swiftshader_icd.json IF EXIST x64\bin\libEGL.dll IF EXIST x64\bin\vk_swiftshader.dll IF EXIST x86\bin\vk_swiftshader_icd.json IF EXIST x86\bin\libEGL.dll IF EXIST x86\bin\vk_swiftshader.dll 7z a -t7z -mx=9 ..\swiftshader-%artifactuid%-%1.7z .\*
+@GOTO doneci
+
+:skipci
+@echo -------------------
+@echo Build is up-to-date.
 
 :doneci
 @cd %devroot%
