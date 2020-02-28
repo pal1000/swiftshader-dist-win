@@ -1,0 +1,1 @@
+@echo ##vso[task.setvariable variable=artifactuid]%artifactuid%
