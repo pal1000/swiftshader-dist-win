@@ -1,0 +1,38 @@
+pr: none
+trigger: none
+schedules:
+  - cron: '45 0,8,16 * * *'
+    branches:
+      include:
+      - master
+    always: true
+    displayName: Starting job
+jobs:
+  - job: swiftshader
+    timeoutInMinutes: 180
+    pool:
+      vmImage: windows-latest
+    strategy:
+      maxParallel: 2
+      matrix:
+        LLVM:
+          REACTOR_BACKEND: LLVM
+        subzero:
+          REACTOR_BACKEND: subzero
+    steps:
+      - checkout: none
+      - script: |
+          git clone --depth=1 https://github.com/google/swiftshader.git swiftshader
+          git clone https://github.com/pal1000/swiftshader-dist-win.git swiftshader-dist-win
+          cd swiftshader-dist-win
+          git checkout 86b2f94127ff57c3d8b797927e38c1f031bbbc51
+          cd ..
+        displayName: Get sources
+      - task: Cache@2
+        inputs:
+          key: sources-UIDs | $(REACTOR_BACKEND)
+          path: swiftshader-dist-win\buildscript\ci\assets
+        displayName: Restoring previous build unique identifiers
+      - script: swiftshader-dist-win\buildscript\ci\ci.cmd $(REACTOR_BACKEND)
+        displayName: Build swiftshader
+      - publish: swiftshader-dist-win\dist\package

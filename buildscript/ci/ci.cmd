@@ -5,7 +5,7 @@
 @set projectname=swiftshader-dist-win
 
 @rem Determine if new build is needed
-@IF EXIST %devroot%\%projectname%\buildscript\ci\assets REN %devroot%\%projectname%\buildscript\ci\assets %devroot%\%projectname%\buildscript\ci\assets-old
+@IF EXIST %devroot%\%projectname%\buildscript\ci\assets REN %devroot%\%projectname%\buildscript\ci\assets assets-old
 @md %devroot%\%projectname%\buildscript\ci\assets
 @cd %devroot%\%projectname:~0,-9%
 @FOR /F "tokens=*" %%a IN ('git rev-parse HEAD') do @echo swiftshader-source-code=%%a>%devroot%\%projectname%\buildscript\ci\assets\hashes.ini
@@ -41,6 +41,9 @@
 @IF EXIST x64\bin\vk_swiftshader_icd.json IF EXIST x64\bin\libEGL.dll IF EXIST x64\bin\vk_swiftshader.dll call %devroot%\%projectname%\buildscript\build.cmd x86-%1
 @cd %devroot%\%projectname%\dist
 @IF EXIST x64\bin\vk_swiftshader_icd.json IF EXIST x64\bin\libEGL.dll IF EXIST x64\bin\vk_swiftshader.dll IF EXIST x86\bin\vk_swiftshader_icd.json IF EXIST x86\bin\libEGL.dll IF EXIST x86\bin\vk_swiftshader.dll 7z a -t7z -mx=9 ..\swiftshader-%artifactuid%-%1.7z .\*
+@IF NOT EXIST package md package
+@cd ..
+@move *.7z dist\package
 @GOTO doneci
 
 :skipci
