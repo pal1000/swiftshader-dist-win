@@ -1,7 +1,7 @@
 pr: none
 trigger: none
 schedules:
-  - cron: '45 0,8,16 * * *'
+  - cron: '0 0,8,16 * * *'
     branches:
       include:
       - master
@@ -25,7 +25,7 @@ jobs:
           git clone --depth=1 https://github.com/google/swiftshader.git swiftshader
           git clone https://github.com/pal1000/swiftshader-dist-win.git swiftshader-dist-win
           cd swiftshader-dist-win
-          git checkout master
+          git checkout c4449f5fea37ea56ef4b04bd1cd844421ab8387a
           cd ..
         displayName: Get sources
       - task: Cache@2
