@@ -25,7 +25,7 @@ jobs:
           git clone --depth=1 https://github.com/google/swiftshader.git swiftshader
           git clone https://github.com/pal1000/swiftshader-dist-win.git swiftshader-dist-win
           cd swiftshader-dist-win
-          git checkout c4449f5fea37ea56ef4b04bd1cd844421ab8387a
+          git checkout 88b0eaa546466373fc9116c53757f84a8da1f9cd
           cd ..
         displayName: Get sources
       - task: Cache@2
