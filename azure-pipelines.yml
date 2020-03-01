@@ -4,7 +4,7 @@ schedules:
   - cron: '0 0,8,16 * * *'
     branches:
       include:
-      - refs/tags/1.0.1
+      - refs/tags/1.0.2
     always: true
     displayName: Starting job
 jobs:
@@ -25,7 +25,7 @@ jobs:
           git clone --depth=1 https://github.com/google/swiftshader.git swiftshader
           git clone https://github.com/pal1000/swiftshader-dist-win.git swiftshader-dist-win
           cd swiftshader-dist-win
-          git checkout 1.0.1
+          git checkout 1.0.2
           cd ..
         displayName: Get sources
       - script: swiftshader-dist-win\buildscript\ci\ci.cmd collectuids

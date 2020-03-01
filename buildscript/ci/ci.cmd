@@ -36,27 +36,27 @@
 @rem Write build unique identifiers to a HTML document with links to those commits
 @IF NOT EXIST %devroot%\%projectname%\dist\buildinfo md %devroot%\%projectname%\dist\buildinfo
 @echo ^<html^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<head^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<title^>Sources unique identifiers^</title^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^</head^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<body^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo Swiftshaader was built using the folowing code sources^<br^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<table^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<tr^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<th^>Description^</th^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<th^>Contents^</th^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^</tr^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<tr^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<td^>Google swiftshader source code^</td^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<td^>^<a href='https://github.com/google/swiftshader/tree/%srcswiftshader%'^>%srcswiftshader%^</a^>^</td^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^</tr^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<tr^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<td^>Build, continous integration and usage utility source code^</td^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<td^>^<a href='https://github.com/pal1000/swiftshader-dist-win/tree/%distswiftshader%'^>%distswiftshader%^</a^>^</td^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^</tr^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^</table^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^</body^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^</html^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<head^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<title^>Sources unique identifiers^</title^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^</head^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<body^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo Swiftshaader was built using the folowing code sources^<br^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<table^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<th^>Description^</th^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<th^>Contents^</th^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^</tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<td^>Google swiftshader source code^</td^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<td^>^<a href='https://github.com/google/swiftshader/tree/%srcswiftshader%'^>%srcswiftshader%^</a^>^</td^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^</tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<td^>Build, continous integration and usage utility source code^</td^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<td^>^<a href='https://github.com/pal1000/swiftshader-dist-win/tree/%distswiftshader%'^>%distswiftshader%^</a^>^</td^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^</tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^</table^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^</body^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^</html^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 
 @rem Run build
 @call %devroot%\%projectname%\buildscript\build.cmd x64-%1
