@@ -41,7 +41,7 @@
 @echo ^</head^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<body^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo Swiftshaader was built using the folowing code sources^<br^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<table^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<table border^='1'^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<th^>Description^</th^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<th^>Contents^</th^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
@@ -57,6 +57,10 @@
 @echo ^</table^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^</body^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^</html^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+
+@rem Inform build script that CI platform runs in parallel mode
+@IF NOT EXIST %devroot%\%projectname%\buildscript\assets md %devroot%\%projectname%\buildscript\assets
+@echo 1>%devroot%\%projectname%\buildscript\assets\ciparallel.ini
 
 @rem Run build
 @call %devroot%\%projectname%\buildscript\build.cmd x64-%1
