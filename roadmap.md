@@ -12,7 +12,7 @@ Write CI script that:
 - [x] gets swiftshader and this repository source code;
 - [x] execuute build with each configuratiion profile;
 - [x] collects artifacts;
-- [ ] publishes artifacts.
+- [x] publishes artifacts.
 ### Usability improvements (v1.1)
 - [ ] link to Khronos document about Vulkan Loader ICD discovery in readme;
 - [ ] implemnt system-wide legacy type vulkan driver deployment;
