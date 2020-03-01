@@ -1,6 +1,15 @@
+# Build script debug output
 /debug
+# Binaries
 /dist/x86
 /dist/x64
+# Build environment and unique identifiers
 /dist/buildinfo
-/dist/ciasset
+/dist/modules/config.cmd
+# Build package
+*.7z
+# Build temporary data
 /buildscript/assets
+# CI temporary data
+/buildscript/ci/assets
+/buildscript/ci/assets-old
