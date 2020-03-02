@@ -14,7 +14,7 @@ Write CI script that:
 - [x] collects artifacts;
 - [x] publishes artifacts.
 ### Usability improvements (v1.1)
-- [ ] link to Khronos document about Vulkan Loader ICD discovery in readme;
+- [x] link to Khronos document about Vulkan Loader ICD discovery in readme;
 - [ ] implemnt system-wide legacy type vulkan driver deployment;
 - [ ] implement launcher with swiftshader as unique Vulkan driver;
 - [ ] implement per application deployment with swiftshader as unique Vulkan driver;
