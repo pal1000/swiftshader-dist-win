@@ -1,10 +1,10 @@
 pr: none
 trigger: none
 schedules:
-  - cron: '10 1,9,17 * * *'
+  - cron: '20 1,9,17 * * *'
     branches:
       include:
-      - refs/tags/1.0.3a
+      - master
     always: true
     displayName: Starting job
 jobs:
