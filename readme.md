@@ -1,5 +1,5 @@
 ### Download
-[![Download link](https://dev.azure.com/bontarka/swiftshader-dist-win/_apis/build/status/pal1000.swiftshader-dist-win?branchName=master)](https://dev.azure.com/bontarka/swiftshader-dist-win/_build/latest?definitionId=1&branchName=master)
+[![Download link](https://dev.azure.com/bontarka/swiftshader-dist-win/_apis/build/status/pal1000.swiftshader-dist-win?branchName=master)](https://dev.azure.com/bontarka/swiftshader-dist-win/_build?view=runs)
 
 Binary packages are created automatically on Azure Pipelines every 8 hours if there are changes either here or with swiftshader itself. Builds will end quickly, under 10 minutes and with no binaries posted if there is no change.
 
