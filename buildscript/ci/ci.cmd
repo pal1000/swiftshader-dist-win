@@ -35,6 +35,13 @@
 @echo @set reactorbackend=%1>>%devroot%\%projectname%\dist\modules\config.cmd
 @call %devroot%\%projectname%\buildscript\ci\pushvar.cmd artifactuid
 
+@rem Write build unique identifiers to log
+@echo ----------------------------------------------------------
+@echo Swiftshader is being built using the folowing code sources
+@echo ----------------------------------------------------------
+@echo https://github.com/google/swiftshader/tree/%srcswiftshader%
+@echo https://github.com/pal1000/swiftshader-dist-win/tree/%distswiftshader%
+
 @rem Write build unique identifiers to a HTML document with links to those commits
 @IF NOT EXIST %devroot%\%projectname%\dist\buildinfo md %devroot%\%projectname%\dist\buildinfo
 @echo ^<html^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
@@ -42,7 +49,7 @@
 @echo ^<title^>Sources unique identifiers^</title^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^</head^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<body^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo Swiftshaader was built using the folowing code sources^<br^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo Swiftshader was built using the folowing code sources^<br^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<table border^='1'^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<th^>Description^</th^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
