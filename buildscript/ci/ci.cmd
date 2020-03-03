@@ -18,8 +18,10 @@
 
 :runci
 @rem Check if build is necessary first
+@set uptodatebuild=0
 @IF NOT EXIST %devroot%\%projectname%\buildscript\ci\assets md %devroot%\%projectname%\buildscript\ci\assets
 @echo 1>%devroot%\%projectname%\buildscript\ci\assets\gotuids.ini
+@IF EXIST %devroot%\%projectname%\buildscript\ci\assets\gotuids.ini IF EXIST %devroot%\%projectname%\buildscript\ci\assets-old\gotuids.ini set uptodatebuild=1
 @IF EXIST %devroot%\%projectname%\buildscript\ci\assets\gotuids.ini IF EXIST %devroot%\%projectname%\buildscript\ci\assets-old\gotuids.ini GOTO skipci
 
 @rem Generating version UID and artifact timestamp, push artifact timestamp to CI YAML configuration
@@ -80,4 +82,5 @@
 @echo Build is up-to-date.
 
 :doneci
+@IF defined uptodatebuild call %devroot%\%projectname%\buildscript\ci\pushvar.cmd uptodatebuild
 @cd %devroot%
