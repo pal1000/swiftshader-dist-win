@@ -6,7 +6,6 @@ schedules:
       include:
       - master
     always: true
-    displayName: Starting job
 jobs:
   - job: swiftshader
     timeoutInMinutes: 180
@@ -25,7 +24,7 @@ jobs:
           git clone --depth=1 https://github.com/google/swiftshader.git swiftshader
           git clone https://github.com/pal1000/swiftshader-dist-win.git swiftshader-dist-win
           cd swiftshader-dist-win
-          git checkout 1.0.4
+          git checkout 1.0.4a
           cd ..
         displayName: Get sources
       - script: swiftshader-dist-win\buildscript\ci\ci.cmd collectuids
@@ -39,9 +38,9 @@ jobs:
         displayName: Build swiftshader
       - publish: swiftshader-dist-win\swiftshader-$(artifactuid)-$(REACTOR_BACKEND).7z
         artifact: swiftshader-$(artifactuid)-$(REACTOR_BACKEND).7z
-        condition: eq($(uptodatebuild), '0')
+        condition: eq(variables['uptodatebuild'], '0')
         displayName: Publish binaries package
       - publish: swiftshader-dist-win\dist\buildinfo\sources-unique-identifiers.html
         artifact: code-sources-unique-identifiers.html
-        condition: eq($(uptodatebuild), '0')
+        condition: eq(variables['uptodatebuild'], '0')
         displayName: Publish build identification document
