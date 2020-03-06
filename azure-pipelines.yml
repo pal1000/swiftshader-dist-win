@@ -24,7 +24,7 @@ jobs:
           git clone --depth=1 https://github.com/google/swiftshader.git swiftshader
           git clone https://github.com/pal1000/swiftshader-dist-win.git swiftshader-dist-win
           cd swiftshader-dist-win
-          git checkout 1.0.4b
+          git checkout 1.0.4c
           cd ..
         displayName: Get sources
       - script: swiftshader-dist-win\buildscript\ci\ci.cmd collectuids
@@ -32,7 +32,7 @@ jobs:
       - task: Cache@2
         inputs:
           key: $(srcswiftshader) | $(distswiftshader)
-          path: swiftshader-dist-win\buildscript\ci\assets-old
+          path: swiftshader-dist-win\buildscript\ci\assets
         displayName: Set a flag if build is up-to-date
       - script: swiftshader-dist-win\buildscript\ci\ci.cmd $(REACTOR_BACKEND)
         displayName: Build swiftshader

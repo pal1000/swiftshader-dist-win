@@ -7,22 +7,27 @@
 @IF /I NOT %1==collectuids GOTO runci
 
 :collectuids
-@rem Collect build sources unique identifiers and push them to CI YAML configuration
+@rem Collect code sources unique identifiers and push them to CI YAML configuration
 @cd %devroot%\%projectname:~0,-9%
 @FOR /F "tokens=*" %%a IN ('git rev-parse HEAD') do @set srcswiftshader=%%a
 @cd %devroot%\%projectname%
 @FOR /F "tokens=*" %%a IN ('git rev-parse HEAD') do @set distswiftshader=%%a
 @call %devroot%\%projectname%\buildscript\ci\pushvar.cmd srcswiftshader
 @call %devroot%\%projectname%\buildscript\ci\pushvar.cmd distswiftshader
+
+@rem Write links to code sources in use to log
+@echo -----------------------------------------------------
+@echo Using the folowing code sources for Swiftshader build
+@echo -----------------------------------------------------
+@echo https://github.com/google/swiftshader/tree/%srcswiftshader%
+@echo https://github.com/pal1000/swiftshader-dist-win/tree/%distswiftshader%
 @GOTO doneci
 
 :runci
 @rem Check if build is necessary first
 @set uptodatebuild=0
-@IF NOT EXIST %devroot%\%projectname%\buildscript\ci\assets md %devroot%\%projectname%\buildscript\ci\assets
-@echo 1>%devroot%\%projectname%\buildscript\ci\assets\gotuids.ini
-@IF EXIST %devroot%\%projectname%\buildscript\ci\assets\gotuids.ini IF EXIST %devroot%\%projectname%\buildscript\ci\assets-old\gotuids.ini set uptodatebuild=1
-@IF EXIST %devroot%\%projectname%\buildscript\ci\assets\gotuids.ini IF EXIST %devroot%\%projectname%\buildscript\ci\assets-old\gotuids.ini GOTO skipci
+@IF EXIST %devroot%\%projectname%\buildscript\ci\assets\gotuids.ini set uptodatebuild=1
+@IF %uptodatebuild% EQU 1 GOTO skipci
 
 @rem Generating version UID and artifact timestamp, push artifact timestamp to CI YAML configuration
 @IF NOT EXIST %devroot%\%projectname%\dist md %devroot%\%projectname%\dist
@@ -35,14 +40,7 @@
 @echo @set reactorbackend=%1>>%devroot%\%projectname%\dist\modules\config.cmd
 @call %devroot%\%projectname%\buildscript\ci\pushvar.cmd artifactuid
 
-@rem Write build unique identifiers to log
-@echo ----------------------------------------------------------
-@echo Swiftshader is being built using the folowing code sources
-@echo ----------------------------------------------------------
-@echo https://github.com/google/swiftshader/tree/%srcswiftshader%
-@echo https://github.com/pal1000/swiftshader-dist-win/tree/%distswiftshader%
-
-@rem Write build unique identifiers to a HTML document with links to those commits
+@rem Write links to code sourcess in use to a HTML document
 @IF NOT EXIST %devroot%\%projectname%\dist\buildinfo md %devroot%\%projectname%\dist\buildinfo
 @echo ^<html^>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<head^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
@@ -80,8 +78,8 @@
 @IF NOT EXIST %devroot%\%projectname%\swiftshader-%artifactuid%-%1.7z GOTO doneci
 
 @rem Prepare cache if we have build artifact
-@IF EXIST %devroot%\%projectname%\buildscript\ci\assets-old RD /S /Q %devroot%\%projectname%\buildscript\ci\assets-old
-@IF EXIST %devroot%\%projectname%\buildscript\ci\assets REN %devroot%\%projectname%\buildscript\ci\assets assets-old
+@IF NOT EXIST %devroot%\%projectname%\buildscript\ci\assets md %devroot%\%projectname%\buildscript\ci\assets
+@echo 1>%devroot%\%projectname%\buildscript\ci\assets\gotuids.ini
 @GOTO doneci
 
 :skipci
