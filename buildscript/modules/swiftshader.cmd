@@ -83,12 +83,6 @@
 @IF /I "%newllvm%"=="y" IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_LLVM_VERSION=10.0
 @IF /I NOT "%newllvm%"=="y" IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_LLVM_VERSION=7.0
 
-@rem IF /I NOT "%vk-swiftshader%"=="n" IF %cimode% EQU 0 if /I NOT "%debugbuildscript%"=="y" set /p spirvtools=Include SPIRV-Tools in release - default^:yes (y/n)^:
-@rem IF /I NOT "%vk-swiftshader%"=="n" IF %cimode% EQU 1 echo Include SPIRV-Tools in release - default^:yes (y/n)^:%spirvtools%
-@rem IF /I NOT "%vk-swiftshader%"=="n" if /I NOT "%debugbuildscript%"=="y" echo.
-@IF /I NOT "%vk-swiftshader%"=="n" IF /I NOT "%spirvtools%"=="n" set buildconf=%buildconf% -DSKIP_SPIRV_TOOLS_INSTALL=OFF
-@IF /I NOT "%vk-swiftshader%"=="n" IF /I "%spirvtools%"=="n" set buildconf=%buildconf% -DSKIP_SPIRV_TOOLS_INSTALL=ON
-
 @IF %cimode% EQU 0 if /I NOT "%debugbuildscript%"=="y" set /p test-swiftshader=Build SwiftShader tests and samples - default^:no (y/n)^:
 @IF %cimode% EQU 1 echo Build SwiftShader tests and samples - default^:no (y/n)^:%test-swiftshader%
 @if /I NOT "%debugbuildscript%"=="y" echo.
