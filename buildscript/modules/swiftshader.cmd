@@ -75,9 +75,9 @@
 @IF /I "%subzerojit%"=="y" set buildconf=%buildconf% -DREACTOR_BACKEND=Subzero
 @IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DREACTOR_BACKEND=LLVM
 
-@rem IF %cimode% EQU 0 if /I NOT "%debugbuildscript%"=="y" IF /I NOT "%subzerojit%"=="y" set /p newllvm=Use new LLVM 10 JIT instead of LLVM 7 - default^:no (y/n)^:
-@rem IF %cimode% EQU 1 IF /I NOT "%subzerojit%"=="y" echo Use new LLVM 10 JIT instead of LLVM 7 - default^:no (y/n)^:%newllvm%
-@rem if /I NOT "%debugbuildscript%"=="y" IF /I NOT "%subzerojit%"=="y" echo.
+@IF %cimode% EQU 0 if /I NOT "%debugbuildscript%"=="y" IF /I NOT "%subzerojit%"=="y" set /p newllvm=Use new LLVM 10 JIT instead of LLVM 7 - default^:no (y/n)^:
+@IF %cimode% EQU 1 IF /I NOT "%subzerojit%"=="y" echo Use new LLVM 10 JIT instead of LLVM 7 - default^:no (y/n)^:%newllvm%
+@if /I NOT "%debugbuildscript%"=="y" IF /I NOT "%subzerojit%"=="y" echo.
 @IF /I "%newllvm%"=="y" IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_LLVM_VERSION=10.0
 @IF /I NOT "%newllvm%"=="y" IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_LLVM_VERSION=7.0
 
