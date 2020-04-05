@@ -17,7 +17,7 @@
 
 @rem Get swiftshader source code if missing
 @IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader IF %cimode% EQU 0 (
-@git clone --recurse-submodules https://github.com/google/swiftshader.git %devroot%\swiftshader
+@git clone https://github.com/google/swiftshader.git %devroot%\swiftshader
 @echo.
 )
 @IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader IF %cimode% EQU 1 GOTO skipbuild
@@ -28,8 +28,6 @@
 @IF %gitstate% GTR 0 IF %cimode% EQU 1 echo Update SwiftShader source code (y/n):%srcupd%
 @IF %gitstate% GTR 0 echo.
 @IF /I "%srcupd%"=="y" git pull -v --progress origin
-@IF /I "%srcupd%"=="y" echo.
-@IF /I "%srcupd%"=="y" git submodule update --init --recursive
 @IF /I "%srcupd%"=="y" echo.
 
 @IF NOT EXIST build md build
