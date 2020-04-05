@@ -81,11 +81,11 @@
 @IF /I "%newllvm%"=="y" IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_LLVM_VERSION=10.0
 @IF /I NOT "%newllvm%"=="y" IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_LLVM_VERSION=7.0
 
-@IF %cimode% EQU 0 if /I NOT "%debugbuildscript%"=="y" set /p test-swiftshader=Build SwiftShader tests and samples - default^:no (y/n)^:
-@IF %cimode% EQU 1 echo Build SwiftShader tests and samples - default^:no (y/n)^:%test-swiftshader%
+@IF %cimode% EQU 0 if /I NOT "%debugbuildscript%"=="y" set /p test-swiftshader=Build SwiftShader tests - default^:no (y/n)^:
+@IF %cimode% EQU 1 echo Build SwiftShader tests - default^:no (y/n)^:%test-swiftshader%
 @if /I NOT "%debugbuildscript%"=="y" echo.
-@IF /I "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_SAMPLES=ON -DSWIFTSHADER_BUILD_TESTS=ON
-@IF /I NOT "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_SAMPLES=OFF -DSWIFTSHADER_BUILD_TESTS=OFF
+@IF /I "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_TESTS=ON
+@IF /I NOT "%test-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_TESTS=OFF
 
 @set buildconf=%buildconf% ..\..
 
