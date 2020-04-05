@@ -2,6 +2,8 @@
 @echo BUILDING SWIFTSHADER WITH LLVM7 BACKEND FOR X64 ARHITECTURE
 @echo -----------------------------------------------------------
 
+@set llvmtenbroken=y
+
 @rem modules\abi.cmd
 @set x64=y
 
@@ -15,6 +17,7 @@
 @rem modules\pythonpackages.cmd
 @set pyupd=n
 @IF EXIST %devroot%\%projectname%\buildscript\assets\ciparallel.* set pyupd=y
+@IF /I "%llvmtenbroken%"=="y" set pyupd=y
 
 @rem modules\throttle.cmd
 @set throttle=%NUMBER_OF_PROCESSORS%
@@ -33,3 +36,4 @@
 @rem modules\envdump.cmd
 @set enableenvdump=n
 @IF EXIST %devroot%\%projectname%\buildscript\assets\ciparallel.* set enableenvdump=y
+@IF /I "%llvmtenbroken%"=="y" set enableenvdump=y
