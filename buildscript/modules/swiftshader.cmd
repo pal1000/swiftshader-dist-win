@@ -17,7 +17,7 @@
 
 @rem Get swiftshader source code if missing
 @IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader IF %cimode% EQU 0 (
-@git clone https://github.com/google/swiftshader.git %devroot%\swiftshader
+@git clone https://swiftshader.googlesource.com/SwiftShader %devroot%\swiftshader
 @echo.
 )
 @IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader IF %cimode% EQU 1 GOTO skipbuild

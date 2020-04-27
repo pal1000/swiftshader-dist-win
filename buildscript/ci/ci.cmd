@@ -19,7 +19,7 @@
 @echo -----------------------------------------------------
 @echo Using the folowing code sources for Swiftshader build
 @echo -----------------------------------------------------
-@echo https://github.com/google/swiftshader/tree/%srcswiftshader%
+@echo https://swiftshader.googlesource.com/SwiftShader/+/%srcswiftshader%
 @echo https://github.com/pal1000/swiftshader-dist-win/tree/%distswiftshader%
 @GOTO doneci
 
