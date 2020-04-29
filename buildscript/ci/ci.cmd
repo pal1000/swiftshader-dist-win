@@ -55,7 +55,7 @@
 @echo ^</tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<td^>Google swiftshader source code^</td^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
-@echo ^<td^>^<a href='https://github.com/google/swiftshader/tree/%srcswiftshader%'^>%srcswiftshader%^</a^>^</td^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
+@echo ^<td^>^<a href='https://swiftshader.googlesource.com/SwiftShader/+/%srcswiftshader%'^>%srcswiftshader%^</a^>^</td^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^</tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<tr^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html
 @echo ^<td^>Build, continous integration and usage utility source code^</td^>>>%devroot%\%projectname%\dist\buildinfo\sources-unique-identifiers.html

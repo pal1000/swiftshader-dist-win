@@ -1,7 +1,7 @@
 pr: none
 trigger: none
 schedules:
-  - cron: '20 0,8,16 * * *'
+  - cron: '0 0,8,16 * * *'
     branches:
       include:
       - master
