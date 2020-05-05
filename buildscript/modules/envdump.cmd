@@ -19,9 +19,9 @@
 
 @rem Dump 7-Zip version and compression level
 @set sevenzpath=1
-@set ERRORLEVEL=0
+@CMD /C EXIT 0
 @where /q 7z.exe
-@IF ERRORLEVEL 1 set sevenzpath=0
+@if NOT "%ERRORLEVEL%"=="0" set sevenzpath=0
 @IF %sevenzpath% EQU 1 set exitloop=1
 @IF %sevenzpath% EQU 1 FOR /F "tokens=2 USEBACKQ delims= " %%a IN (`7z.exe 2^>^&1`) DO @IF defined exitloop (
 set "exitloop="

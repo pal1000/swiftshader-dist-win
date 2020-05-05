@@ -5,12 +5,12 @@
 - [x] annonimize project name in source for easy code sharing;
 - [x] implement manual build options configuration,
 ### Automatic build configuration (v0.2)
-- [x] write build configuratiion profiles;
+- [x] write build configuration profiles;
 - [x] implement CI mode in which pauses and screen clears are skipped and questions have answears pre-filled.
 ### Spawn buildbot (v1.0)
 Write CI script that:
 - [x] gets swiftshader and this repository source code;
-- [x] execuute build with each configuratiion profile;
+- [x] execuute build with each configuration profile;
 - [x] collects artifacts;
 - [x] publishes artifacts.
 ### Usability improvements (v1.1)

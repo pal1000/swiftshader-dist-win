@@ -7,6 +7,7 @@
 @for %%a in ("%cd%") do @set devroot=%%~sa
 
 @set projectname=swiftshader-dist-win
+@set "ERRORLEVEL="
 
 @rem Detect and activate ci mode
 @set cimode=0
