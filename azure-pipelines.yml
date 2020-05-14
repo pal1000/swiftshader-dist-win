@@ -12,8 +12,10 @@ jobs:
     pool:
       vmImage: windows-latest
     strategy:
-      maxParallel: 2
+      maxParallel: 3
       matrix:
+        LLVM10:
+          REACTOR_BACKEND: LLVM10
         LLVM7:
           REACTOR_BACKEND: LLVM7
         subzero:
@@ -24,7 +26,7 @@ jobs:
           git clone --depth=1 https://swiftshader.googlesource.com/SwiftShader swiftshader
           git clone https://github.com/pal1000/swiftshader-dist-win.git swiftshader-dist-win
           cd swiftshader-dist-win
-          git checkout 1.0.4i
+          git checkout 1.0.5
           cd ..
         displayName: Get sources
       - script: swiftshader-dist-win\buildscript\ci\ci.cmd collectuids

@@ -2,7 +2,7 @@
 @echo BUILDING SWIFTSHADER WITH LLVM7 BACKEND FOR X64 ARHITECTURE
 @echo -----------------------------------------------------------
 
-@set llvmtenbroken=y
+@set llvmtenbroken=n
 
 @rem modules\abi.cmd
 @set x64=y
