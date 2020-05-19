@@ -16,7 +16,7 @@ Write CI script that:
 ### Usability improvements (v1.1)
 - [x] link to Khronos document about Vulkan Loader ICD discovery in readme;
 - [ ] implemnt system-wide legacy type vulkan driver deployment;
-- [ ] implement launcher with swiftshader as unique Vulkan driver;
+- [x] implement programs launcher with swiftshader as unique Vulkan driver;
 - [ ] implement per application deployment with swiftshader as unique Vulkan driver;
 - [ ] implement system-wide vulkan driver deployment via fake GPU or dummy software component if possible;
 - [ ] implement per application deployment of swiftshader OpenGL ES driver.
