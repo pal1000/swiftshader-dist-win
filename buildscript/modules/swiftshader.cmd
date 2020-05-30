@@ -35,8 +35,10 @@
 
 @rem Ask if a dry run with collection of build config options and targets is wanted instead of actual build.
 @rem Aplies to interactive mode only
-@if NOT %ninjastate%==0 IF %cimode% EQU 0 set /p debugbuildscript=Dry run the build only and dump build config options and targets for debugging (y/n):
-@if NOT %ninjastate%==0 IF %cimode% EQU 0 echo.
+@if NOT %ninjastate%==0 IF %cimode% EQU 0 (
+@set /p debugbuildscript=Dry run the build only and dump build config options and targets for debugging ^(y/n^)^:
+@echo.
+)
 
 @rem Ask for Ninja use if exists. Load it if opted for it.
 @if NOT %ninjastate%==0 IF %cimode% EQU 0 if /I NOT "%debugbuildscript%"=="y" set /p ninja=Use Ninja build system instead of MsBuild (y/n); less storage device strain, faster and more efficient build:
@@ -75,11 +77,28 @@
 @IF /I "%subzerojit%"=="y" set buildconf=%buildconf% -DREACTOR_BACKEND=Subzero
 @IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DREACTOR_BACKEND=LLVM
 
-@IF %cimode% EQU 0 if /I NOT "%debugbuildscript%"=="y" IF /I NOT "%subzerojit%"=="y" set /p newllvm=Use new LLVM 10 JIT instead of LLVM 7 - default^:no (y/n)^:
-@IF %cimode% EQU 1 IF /I NOT "%subzerojit%"=="y" echo Use new LLVM 10 JIT instead of LLVM 7 - default^:no (y/n)^:%newllvm%
-@if /I NOT "%debugbuildscript%"=="y" IF /I NOT "%subzerojit%"=="y" echo.
-@IF /I "%newllvm%"=="y" IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_LLVM_VERSION=10.0
+@IF /I NOT "%subzerojit%"=="y" IF %gitstate% GTR 0 set canllvmnew=1
+@IF /I NOT "%subzerojit%"=="y" IF %gitstate% EQU 0 IF EXIST "%devroot%\swiftshader\third_party\llvm-10.0\configs\windows\include\llvm\Config\" set canllvmnew=1
+@set canllvmnew=0
+
+@IF %cimode% EQU 0 if /I NOT "%debugbuildscript%"=="y" IF %canllvmnew% EQU 1 set /p newllvm=Use new LLVM 10 JIT instead of LLVM 7 - default^:no (y/n)^:
+@IF %cimode% EQU 1 IF %canllvmnew% EQU 1 echo Use new LLVM 10 JIT instead of LLVM 7 - default^:no (y/n)^:%newllvm%
+@if /I NOT "%debugbuildscript%"=="y" IF %canllvmnew% EQU 1 echo.
 @IF /I NOT "%newllvm%"=="y" IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_LLVM_VERSION=7.0
+@IF /I "%newllvm%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_LLVM_VERSION=10.0
+@IF /I "%newllvm%"=="y" IF NOT EXIST "%devroot%\swiftshader\third_party\llvm-10.0\configs\windows\" md %devroot%\swiftshader\third_party\llvm-10.0\configs\windows
+@IF /I "%newllvm%"=="y" IF NOT EXIST "%devroot%\swiftshader\third_party\llvm-10.0\configs\windows\include\" md %devroot%\swiftshader\third_party\llvm-10.0\configs\windows\include
+@IF /I "%newllvm%"=="y" IF NOT EXIST "%devroot%\swiftshader\third_party\llvm-10.0\configs\windows\include\llvm\" md %devroot%\swiftshader\third_party\llvm-10.0\configs\windows\include\llvm
+@IF /I "%newllvm%"=="y" IF NOT EXIST "%devroot%\swiftshader\third_party\llvm-10.0\configs\windows\include\llvm\Config\" (
+@git clone https://github.com/pal1000/llvm-win-include-for-swiftshader.git %devroot%\swiftshader\third_party\llvm-10.0\configs\windows\include\llvm\Config
+@echo.
+)
+@IF /I "%newllvm%"=="y" (
+@copy /Y %devroot%\swiftshader\third_party\llvm-10.0\configs\windows\include\llvm\Config\llvm-config-%abi%.h %devroot%\swiftshader\third_party\llvm-10.0\configs\windows\include\llvm\Config\llvm-config.h
+@echo.
+@copy /Y %devroot%\swiftshader\third_party\llvm-10.0\configs\windows\include\llvm\Config\config-%abi%.h %devroot%\swiftshader\third_party\llvm-10.0\configs\windows\include\llvm\Config\config.h
+@echo.
+)
 
 @IF %cimode% EQU 0 if /I NOT "%debugbuildscript%"=="y" set /p test-swiftshader=Build SwiftShader tests - default^:no (y/n)^:
 @IF %cimode% EQU 1 echo Build SwiftShader tests - default^:no (y/n)^:%test-swiftshader%
@@ -111,8 +130,7 @@
 @if /I NOT "%ninja%"=="y" if %abi%==x64 set buildcmd=msbuild -p^:Configuration^=release,Platform^=x64
 @if /I NOT "%ninja%"=="y" IF /I "%spirvtools%"=="y" set buildcmd=%buildcmd% INSTALL.vcxproj
 @if /I NOT "%ninja%"=="y" IF /I NOT "%spirvtools%"=="y" set buildcmd=%buildcmd% swiftshader.sln
-@if /I NOT "%ninja%"=="y" set buildcmd=%buildcmd% -m^:%throttle%
-@if /I NOT "%ninja%"=="y" set buildcmd=%buildcmd% -v^:m
+@if /I NOT "%ninja%"=="y" set buildcmd=%buildcmd% -m^:%throttle% -v^:m
 @if /I "%ninja%"=="y" set buildcmd=ninja -j %throttle%
 @if /I "%ninja%"=="y" IF /I "%spirvtools%"=="y" set buildcmd=%buildcmd% install
 @rem Debug code to list ninja targets.
