@@ -1,13 +1,10 @@
 @setlocal
 @rem Look for CMake build generator.
-@IF %cmakestate%==0 (
-@echo Fatal: CMake is required to build swiftshader.
-@GOTO skipbuild
-)
-@IF %gitstate%==0 IF NOT EXIST %devroot%\swiftshader (
-@echo Fatal: Failed to obtain swiftshader source code.
-@GOTO skipbuild
-)
+@IF %cmakestate%==0 echo Fatal: CMake is required to build swiftshader.
+@IF %cmakestate%==0 GOTO skipbuild
+
+@IF %gitstate%==0 IF NOT EXIST %devroot%\swiftshader echo Fatal: Failed to obtain swiftshader source code.
+@IF %gitstate%==0 IF NOT EXIST %devroot%\swiftshader GOTO skipbuild
 
 @rem Ask to do swiftshader build
 @IF %cimode% EQU 0 set /p buildswiftshader=Build SwiftShader (y/n):
@@ -35,10 +32,8 @@
 
 @rem Ask if a dry run with collection of build config options and targets is wanted instead of actual build.
 @rem Aplies to interactive mode only
-@if NOT %ninjastate%==0 IF %cimode% EQU 0 (
-@set /p debugbuildscript=Dry run the build only and dump build config options and targets for debugging ^(y/n^)^:
-@echo.
-)
+@if NOT %ninjastate%==0 IF %cimode% EQU 0 set /p debugbuildscript=Dry run the build only and dump build config options and targets for debugging ^(y/n^)^:
+@if NOT %ninjastate%==0 IF %cimode% EQU 0 echo.
 
 @rem Ask for Ninja use if exists. Load it if opted for it.
 @if NOT %ninjastate%==0 IF %cimode% EQU 0 if /I NOT "%debugbuildscript%"=="y" set /p ninja=Use Ninja build system instead of MsBuild (y/n); less storage device strain, faster and more efficient build:
@@ -99,12 +94,10 @@
 @IF %cimode% EQU 1 echo Do you want to clean build (y/n):%cleanbuild%
 @if /I NOT "%debugbuildscript%"=="y" echo.
 @if /I "%debugbuildscript%"=="y" set cleanbuild=y
-@IF /I "%cleanbuild%"=="y" (
-@echo Cleanning build...
-@echo.
-@if EXIST buildsys-%abi% RD /S /Q buildsys-%abi%
-@if EXIST %devroot%\%projectname%\dist\%abi% RD /S /Q %devroot%\%projectname%\dist\%abi%
-)
+@IF /I "%cleanbuild%"=="y" echo Cleanning build...
+@IF /I "%cleanbuild%"=="y" echo.
+@IF /I "%cleanbuild%"=="y" if EXIST buildsys-%abi% RD /S /Q buildsys-%abi%
+@IF /I "%cleanbuild%"=="y" if EXIST %devroot%\%projectname%\dist\%abi% RD /S /Q %devroot%\%projectname%\dist\%abi%
 @IF NOT EXIST buildsys-%abi% md buildsys-%abi%
 @cd buildsys-%abi%
 
