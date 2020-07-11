@@ -110,11 +110,11 @@
 @rem Generate build perform command
 @if /I NOT "%ninja%"=="y" if %abi%==x86 set buildcmd=msbuild -p^:Configuration^=release,Platform^=Win32
 @if /I NOT "%ninja%"=="y" if %abi%==x64 set buildcmd=msbuild -p^:Configuration^=release,Platform^=x64
-@if /I NOT "%ninja%"=="y" IF /I "%spirvtools%"=="y" set buildcmd=%buildcmd% INSTALL.vcxproj
-@if /I NOT "%ninja%"=="y" IF /I NOT "%spirvtools%"=="y" set buildcmd=%buildcmd% swiftshader.sln
+@if /I NOT "%ninja%"=="y" IF /I NOT "%spirvtools%"=="n" set buildcmd=%buildcmd% INSTALL.vcxproj
+@if /I NOT "%ninja%"=="y" IF /I "%spirvtools%"=="n" set buildcmd=%buildcmd% swiftshader.sln
 @if /I NOT "%ninja%"=="y" set buildcmd=%buildcmd% -m^:%throttle% -v^:m
 @if /I "%ninja%"=="y" set buildcmd=ninja -j %throttle%
-@if /I "%ninja%"=="y" IF /I "%spirvtools%"=="y" set buildcmd=%buildcmd% install
+@if /I "%ninja%"=="y" IF /I NOT "%spirvtools%"=="n" set buildcmd=%buildcmd% install
 @rem Debug code to list ninja targets.
 @if /I "%debugbuildscript%"=="y" set buildcmd=ninja -t targets all
 
