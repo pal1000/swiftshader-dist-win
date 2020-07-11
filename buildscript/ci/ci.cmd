@@ -71,10 +71,14 @@
 
 @rem Run build
 @call %devroot%\%projectname%\buildscript\build.cmd x64-%1
+@call %devroot%\%projectname%\buildscript\build.cmd x86-%1
+@cd %devroot%\%projectname%\dist\x64\bin
+@IF EXIST vk_swiftshader_icd.json IF EXIST libEGL.dll IF EXIST vk_swiftshader.dll set swiftshaderx64ok=1
+@cd %devroot%\%projectname%\dist\x86\bin
+@IF EXIST vk_swiftshader_icd.json IF EXIST libEGL.dll IF EXIST vk_swiftshader.dll set swiftshaderx86ok=1
+@IF NOT defined swiftshaderx64ok IF NOT defined swiftshaderx86ok GOTO doneci
 @cd %devroot%\%projectname%\dist
-@IF EXIST x64\bin\vk_swiftshader_icd.json IF EXIST x64\bin\libEGL.dll IF EXIST x64\bin\vk_swiftshader.dll call %devroot%\%projectname%\buildscript\build.cmd x86-%1
-@cd %devroot%\%projectname%\dist
-@IF EXIST x64\bin\vk_swiftshader_icd.json IF EXIST x64\bin\libEGL.dll IF EXIST x64\bin\vk_swiftshader.dll IF EXIST x86\bin\vk_swiftshader_icd.json IF EXIST x86\bin\libEGL.dll IF EXIST x86\bin\vk_swiftshader.dll 7z a -t7z -mx=9 ..\swiftshader-%artifactuid%-%1.7z .\*
+@7z a -t7z -mx=9 ..\swiftshader-%artifactuid%-%1.7z .\*
 @IF NOT EXIST %devroot%\%projectname%\swiftshader-%artifactuid%-%1.7z GOTO doneci
 
 @rem Prepare cache if we have build artifact
