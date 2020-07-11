@@ -30,6 +30,7 @@
 @set gles-swiftshader=y
 @set subzerojit=n
 @set newllvm=n
+@set spirvtools=y
 @set test-swiftshader=n
 @set cleanbuild=y
 
