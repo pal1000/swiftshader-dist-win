@@ -142,13 +142,14 @@
 @echo.
 @IF %cimode% EQU 0 pause
 @if /I "%debugbuildscript%"=="y" if /I NOT "%ninja%"=="y" GOTO skipbuild
+@if /I "%debugbuildscript%"=="y" %buildcmd% > %devroot%\%projectname%\debug\ninja.txt 2>&1
+@if /I "%debugbuildscript%"=="y" GOTO skipbuild
 @IF %cimode% EQU 0 echo.
 @if /I NOT "%ninja%"=="y" call %vsenv% %vsabi%
 @if /I NOT "%ninja%"=="y" echo.
-@if /I NOT "%debugbuildscript%"=="y" %buildcmd%
-@if /I NOT "%debugbuildscript%"=="y" echo.
-@if /I NOT "%debugbuildscript%"=="y" call %devroot%\%projectname%\buildscript\modules\dist.cmd
-@if /I "%debugbuildscript%"=="y" %buildcmd% > %devroot%\%projectname%\debug\ninja.txt 2>&1
+@%buildcmd%
+@echo.
+@call %devroot%\%projectname%\buildscript\modules\dist.cmd
 
 :skipbuild
 @echo.
