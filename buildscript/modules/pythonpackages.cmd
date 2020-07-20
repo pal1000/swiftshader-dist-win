@@ -1,6 +1,7 @@
 @setlocal
 
 @rem Check for python packages updates.
+@IF %cimode% EQU 0 set "pyupd="
 @IF %cimode% EQU 0 set /p pyupd=Update python packages (y/n):
 @IF %cimode% EQU 1 echo Update python packages (y/n):%pyupd%
 @echo.

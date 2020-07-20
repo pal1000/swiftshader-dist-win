@@ -33,6 +33,7 @@
 @IF !pythoninstance^:^~1^,-3! GEQ 3.5 echo !pythoncount!. Python !pythoninstance:~1,-3! !pythoninstance:~-2! bit
 )
 @echo.
+@IF %cimode% EQU 0 set "pyselect="
 @IF %cimode% EQU 0 set /p pyselect=Select Python version by entering its index from the table above:
 @IF %cimode% EQU 1 echo Select Python version by entering its index from the table above:%pyselect%
 @echo.

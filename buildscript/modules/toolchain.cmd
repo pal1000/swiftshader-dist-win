@@ -29,6 +29,7 @@
 )
 
 @rem Select compiler
+@IF %cimode% EQU 0 set "selecttoolchain="
 @IF %cimode% EQU 0 set /p selecttoolchain=Select compiler:
 @IF %cimode% EQU 1 echo Select compiler:%selecttoolchain%
 @echo.
@@ -58,6 +59,7 @@ set msvcver=!msvcversions[%%a]!
 
 :novcpp
 @IF NOT EXIST %vsenv% echo Error: Selected Visual Studio installation lacks Desktop development with C++ workload necessary to build swiftshader.
+@IF NOT EXIST %vsenv% IF %cimode% EQU 0 set "addvcpp="
 @IF NOT EXIST %vsenv% IF %cimode% EQU 0 set /p addvcpp=Add Desktop development with C++ workload - y/n:
 @IF NOT EXIST %vsenv% IF %cimode% EQU 1 echo Add Desktop development with C++ workload - y/n:%addvcpp%
 @IF NOT EXIST %vsenv% echo.

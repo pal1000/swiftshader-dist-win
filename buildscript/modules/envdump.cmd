@@ -1,6 +1,7 @@
 @setlocal
 @IF NOT EXIST %devroot%\%projectname%\dist md %devroot%\%projectname%\dist
 @IF NOT EXIST %devroot%\%projectname%\dist\buildinfo md %devroot%\%projectname%\dist\buildinfo
+@IF %cimode% EQU 0 set "enableenvdump="
 @IF %cimode% EQU 0 set /p enableenvdump=Do you want to dump build environment information to a text file (y/n):
 @IF %cimode% EQU 1 echo Do you want to dump build environment information to a text file (y/n):%enableenvdump%
 @echo.
