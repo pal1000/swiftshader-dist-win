@@ -1,7 +1,7 @@
 pr: none
 trigger: none
 schedules:
-  - cron: '5 0,8,16 * * *'
+  - cron: '0 0,8,16 * * *'
     branches:
       include:
       - master
@@ -12,12 +12,10 @@ jobs:
     pool:
       vmImage: windows-latest
     strategy:
-      maxParallel: 3
+      maxParallel: 2
       matrix:
         LLVM10:
           REACTOR_BACKEND: LLVM10
-        LLVM7:
-          REACTOR_BACKEND: LLVM7
         subzero:
           REACTOR_BACKEND: subzero
     steps:
