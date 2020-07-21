@@ -13,3 +13,4 @@
 @endlocal
 @cd %devroot%
 @IF %cimode% EQU 0 pause
+@IF %cimode% EQU 0 echo.

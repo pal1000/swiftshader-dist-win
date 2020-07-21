@@ -28,5 +28,4 @@ echo.
 )
 
 :endpython
-@echo.
 @endlocal

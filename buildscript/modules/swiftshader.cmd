@@ -1,9 +1,11 @@
 @setlocal
 @rem Look for CMake build generator.
 @IF %cmakestate%==0 echo Fatal: CMake is required to build swiftshader.
+@IF %cmakestate%==0 echo.
 @IF %cmakestate%==0 GOTO skipbuild
 
 @IF %gitstate%==0 IF NOT EXIST %devroot%\swiftshader echo Fatal: Failed to obtain swiftshader source code.
+@IF %gitstate%==0 IF NOT EXIST %devroot%\swiftshader echo.
 @IF %gitstate%==0 IF NOT EXIST %devroot%\swiftshader GOTO skipbuild
 
 @rem Ask to do swiftshader build
@@ -138,13 +140,13 @@
 @if /I NOT "%debugbuildscript%"=="y" %buildconf%
 @if /I NOT "%debugbuildscript%"=="y" echo.
 @if /I "%debugbuildscript%"=="y" %buildconf% > %devroot%\%projectname%\debug\cmake.txt 2>&1
+@if /I "%debugbuildscript%"=="y" if /I NOT "%ninja%"=="y" GOTO skipbuild
 @echo Build execution command: %buildcmd%
 @echo.
 @IF %cimode% EQU 0 pause
-@if /I "%debugbuildscript%"=="y" if /I NOT "%ninja%"=="y" GOTO skipbuild
+@IF %cimode% EQU 0 echo.
 @if /I "%debugbuildscript%"=="y" %buildcmd% > %devroot%\%projectname%\debug\ninja.txt 2>&1
 @if /I "%debugbuildscript%"=="y" GOTO skipbuild
-@IF %cimode% EQU 0 echo.
 @if /I NOT "%ninja%"=="y" call %vsenv% %vsabi%
 @if /I NOT "%ninja%"=="y" echo.
 @%buildcmd%
@@ -152,7 +154,6 @@
 @call %devroot%\%projectname%\buildscript\modules\dist.cmd
 
 :skipbuild
-@echo.
 @rem Reset environment after swiftshader build.
 @endlocal
 @cd %devroot%
