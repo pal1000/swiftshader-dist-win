@@ -14,9 +14,15 @@
 @set toolset=0
 
 @set totalmsvc=0
-@IF EXIST %vswhere% for /F "USEBACKQ tokens=*" %%a IN (`%vswhere% -prerelease -property catalog_productDisplayVersion 2^>^&1`) do @set /a totalmsvc+=1&set msvcversions[!totalmsvc!]=%%a
+@IF EXIST %vswhere% for /F "USEBACKQ tokens=*" %%a IN (`%vswhere% -prerelease -property catalog_productDisplayVersion 2^>^&1`) do @(
+set /a totalmsvc+=1
+set msvcversions[!totalmsvc!]=%%a
+)
 @set msvccount=0
-@IF EXIST %vswhere% for /F "USEBACKQ tokens=*" %%a IN (`%vswhere% -prerelease -property displayName 2^>^&1`) do @set /a msvccount+=1&set msvcnames[!msvccount!]=%%a
+@IF EXIST %vswhere% for /F "USEBACKQ tokens=*" %%a IN (`%vswhere% -prerelease -property displayName 2^>^&1`) do @(
+set /a msvccount+=1
+set msvcnames[!msvccount!]=%%a
+)
 @IF %cimode% EQU 0 cls
 @echo Available compilers
 @IF %totalmsvc% GTR 0 FOR /L %%a IN (1,1,%totalmsvc%) do @echo %%a.!msvcnames[%%a]! v!msvcversions[%%a]!
@@ -51,7 +57,10 @@
 
 @rem Determine version and build enviroment launcher PATH for selected Visual Studio installation
 @set msvccount=0
-@for /F "USEBACKQ tokens=*" %%a IN (`%vswhere% -prerelease -property installationPath`) do @set /a msvccount+=1&IF !msvccount!==%selecttoolchain% set vsenv="%%a\VC\Auxiliary\Build\vcvarsall.bat"
+@for /F "USEBACKQ tokens=*" %%a IN (`%vswhere% -prerelease -property installationPath`) do @(
+set /a msvccount+=1
+IF !msvccount!==%selecttoolchain% set vsenv="%%a\VC\Auxiliary\Build\vcvarsall.bat"
+)
 @FOR /L %%a IN (1,1,%totalmsvc%) do @IF "%%a"=="%selecttoolchain%" (
 set msvcname=!msvcnames[%%a]!
 set msvcver=!msvcversions[%%a]!
