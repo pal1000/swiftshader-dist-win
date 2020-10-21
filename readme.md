@@ -1,5 +1,9 @@
 Download from [![Download link](https://dev.azure.com/bontarka/swiftshader-dist-win/_apis/build/status/pal1000.swiftshader-dist-win?branchName=master)](https://dev.azure.com/bontarka/swiftshader-dist-win/_build?view=runs)
 
+If it's not obvious how to download watch this video
+
+[![Play](https://pal1000.github.io/shared/tutorials/video.png)](https://raw.githubusercontent.com/pal1000/swiftshader-dist-win/master/download.mp4)
+
 Binaries packages are created automatically on Azure Pipelines every 8 hours if there are changes either here or with swiftshader itself. Builds will end quickly, under 10 minutes and with no binaries posted if there is no change.
 
 Each binaries package has a life span of 30 days since creation per default Azure Pipelines runs retention policy.
