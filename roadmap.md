@@ -10,7 +10,7 @@
 ### Spawn buildbot (v1.0)
 Write CI script that:
 - [x] gets swiftshader and this repository source code;
-- [x] execuute build with each configuration profile;
+- [x] executes build with each configuration profile;
 - [x] collects artifacts;
 - [x] publishes artifacts.
 ### Usability improvements (v1.1)
