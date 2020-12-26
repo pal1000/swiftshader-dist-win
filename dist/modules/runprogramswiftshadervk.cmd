@@ -19,6 +19,17 @@
 )
 @IF /I %PROCESSOR_ARCHITECTURE%==AMD64 set VK_ICD_FILENAMES=%swiftshaderdir%\x64\bin\vk_swiftshader_icd.json;%swiftshaderdir%\x86\bin\vk_swiftshader_icd.json
 @IF /I %PROCESSOR_ARCHITECTURE%==x86 set VK_ICD_FILENAMES=%swiftshaderdir%\x86\bin\vk_swiftshader_icd.json
-@%progexe%
+@set progdir=%progexe%
+@IF %progdir:~0,1%%progdir:~-1%=="" set progdir=%progdir:~1,-1%
+
+:getprogdir
+@IF %progdir:~-1%==^\ GOTO doneprog
+@set progdir=%progdir:~0,-1%
+@GOTO getprogdir
+
+:doneprog
+@set progdir=%progdir:~0,-1%
+@cd /D "%progdir%"
+@call %progexe%
 @cls
 @GOTO runprogloop
