@@ -23,7 +23,7 @@
 @IF %progdir:~0,1%%progdir:~-1%=="" set progdir=%progdir:~1,-1%
 
 :getprogdir
-@IF %progdir:~-1%==^\ GOTO doneprog
+@IF "%progdir:~-1%"=="\" GOTO doneprog
 @set progdir=%progdir:~0,-1%
 @GOTO getprogdir
 
