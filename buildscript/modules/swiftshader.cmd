@@ -72,8 +72,8 @@
 @IF %cimode% EQU 0 set /p gles-swiftshader=Build SwiftShader GLES Drivers - default^:no (y/n)^:
 @IF %cimode% EQU 1 echo Build SwiftShader GLES Drivers - default^:no (y/n)^:%gles-swiftshader%
 @echo.
-@IF /I "%gles-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_EGL=ON -DSWIFTSHADER_BUILD_GLES_CM=ON -DSWIFTSHADER_BUILD_GLESv2=ON
-@IF /I NOT "%gles-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_EGL=OFF -DSWIFTSHADER_BUILD_GLES_CM=OFF -DSWIFTSHADER_BUILD_GLESv2=OFF
+@IF /I "%gles-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_EGL=ON -DSWIFTSHADER_BUILD_GLESv2=ON
+@IF /I NOT "%gles-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_EGL=OFF -DSWIFTSHADER_BUILD_GLESv2=OFF
 
 @IF %cimode% EQU 0 set "subzerojit="
 @IF %cimode% EQU 0 set /p subzerojit=Use Subzero JIT instead of LLVM - default^:no (y/n)^:

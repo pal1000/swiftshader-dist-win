@@ -9,6 +9,8 @@
 @IF EXIST translator RD /S /Q translator
 @md translator
 @move *translator.dll translator
+@REN libEGL_deprecated.dll libEGL.dll
+@REN libGLESv2_deprecated.dll libGLESv2.dll
 @echo.
 @endlocal
 @cd %devroot%
