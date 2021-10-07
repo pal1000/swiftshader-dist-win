@@ -11,28 +11,24 @@
 @if NOT "%ERRORLEVEL%"=="0" GOTO nopylauncher
 
 :pylist
+@rem Count and list supported python installations
 @set pythontotal=0
 @IF %cimode% EQU 0 cls
 @IF %cimode% EQU 1 echo.
-
-@rem Count supported python installations
-@FOR /F "USEBACKQ tokens=1 skip=1" %%a IN (`py -0 2^>nul`) do @(
-@set pythoninstance=%%a
-@IF !pythoninstance^:^~1^,-3! GEQ 3.5 set /a pythontotal+=1
+@FOR /F tokens^=1-3^ skip^=1^ delims^=.-^  %%a IN ('py -0 2^>nul') do @(
+@set goodpython=1
+@if %%a LSS 3 set goodpython=0
+@if %%a EQU 3 if %%b LSS 5 set goodpython=0
+@IF !goodpython!==1 set /a pythontotal+=1
+@IF !pythontotal!==1 echo Select Python installation
+@IF !goodpython!==1 echo !pythontotal!. Python %%a.%%b %%c bit
 )
 @IF %pythontotal%==0 echo WARNING: No suitable Python installation found by Python launcher.
 @IF %pythontotal%==0 echo Note that SwiftShader requires Python 3.x.
 @IF %pythontotal%==0 echo.
 @IF %pythontotal%==0 GOTO nopylauncher
+@IF %pythontotal% GTR 0 echo.
 
-@echo Select Python installation
-@set pythoncount=0
-@FOR /F "USEBACKQ tokens=1 skip=1" %%a IN (`py -0 2^>nul`) do @(
-@set pythoninstance=%%a
-@IF !pythoninstance^:^~1^,-3! GEQ 3.5 set /a pythoncount+=1
-@IF !pythoninstance^:^~1^,-3! GEQ 3.5 echo !pythoncount!. Python !pythoninstance:~1,-3! !pythoninstance:~-2! bit
-)
-@echo.
 @IF %cimode% EQU 0 set "pyselect="
 @IF %cimode% EQU 0 set /p pyselect=Select Python version by entering its index from the table above:
 @IF %cimode% EQU 1 echo Select Python version by entering its index from the table above:%pyselect%
@@ -52,10 +48,12 @@
 
 @rem Locate selected Python installation
 @set pythoncount=0
-@FOR /F "USEBACKQ tokens=1 skip=1" %%a IN (`py -0 2^>nul`) do @(
-@set pythoninstance=%%a
-@IF !pythoninstance^:^~1^,-3! GEQ 3.5 set /a pythoncount+=1
-@IF !pythoncount!==%pyselect% set selectedpython=%%a
+@FOR /F tokens^=1-3^ skip^=1^ delims^=.-^  %%a IN ('py -0 2^>nul') do @(
+@set goodpython=1
+@if %%a LSS 3 set goodpython=0
+@if %%a EQU 3 if %%b LSS 5 set goodpython=0
+@IF !goodpython!==1 set /a pythoncount+=1
+@IF !pythoncount!==%pyselect% set selectedpython=-%%a.%%b-%%c
 )
 @FOR /F "tokens=* USEBACKQ" %%a IN (`py %selectedpython%  -c "import sys; print(sys.executable)"`) DO @set pythonloc=%%~sa
 @GOTO loadpypath
@@ -96,9 +94,13 @@ SET pypath=%%~sa
 @FOR /F "USEBACKQ delims= " %%a IN (`%pythonloc% -c "import sys; print(sys.version)"`) DO @SET fpythonver=%%a
 
 @rem Check if Python version is not too old.
-@FOR /F "USEBACKQ delims= " %%a IN (`%pythonloc% -c "import sys; print(str(sys.version_info[0])+'.'+str(sys.version_info[1]))"`) DO @SET pythonver=%%a
-@IF %pythonver% LSS 3.5 (
-@echo Your Python version is too old. Only Python 3.5 and newer are supported.
+@set goodpython=1
+@FOR /F "USEBACKQ tokens=1-2 delims=." %%a IN (`%pythonloc% -c "import sys; print(str(sys.version_info[0])+'.'+str(sys.version_info[1]))"`) DO @(
+@if %%a LSS 3 set goodpython=0
+@if %%a EQU 3 if %%b LSS 5 set goodpython=0
+)
+@IF %goodpython% EQU 0 (
+@echo Your Python version is too old. Only Python 3.5 and newer is supported.
 @echo.
 @IF %cimode% EQU 0 pause
 @exit
