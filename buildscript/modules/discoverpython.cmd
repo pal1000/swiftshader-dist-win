@@ -15,13 +15,13 @@
 @set pythontotal=0
 @IF %cimode% EQU 0 cls
 @IF %cimode% EQU 1 echo.
-@FOR /F tokens^=1-3^ skip^=1^ delims^=.-^  %%a IN ('py -0 2^>nul') do @(
+@FOR /F tokens^=2-3^ skip^=1^ delims^=- %%a IN ('py -0 2^>nul') do @FOR /F tokens^=1-2^ delims^=. %%c IN ("%%a") do @(
 @set goodpython=1
-@if %%a LSS 3 set goodpython=0
-@if %%a EQU 3 if %%b LSS 5 set goodpython=0
+@if %%c LSS 3 set goodpython=0
+@if %%c EQU 3 if %%d LSS 5 set goodpython=0
 @IF !goodpython!==1 set /a pythontotal+=1
 @IF !pythontotal!==1 echo Select Python installation
-@IF !goodpython!==1 echo !pythontotal!. Python %%a.%%b %%c bit
+@IF !goodpython!==1 echo !pythontotal!. Python %%a %%b bit
 )
 @IF %pythontotal%==0 echo WARNING: No suitable Python installation found by Python launcher.
 @IF %pythontotal%==0 echo Note that SwiftShader requires Python 3.x.
@@ -48,12 +48,12 @@
 
 @rem Locate selected Python installation
 @set pythoncount=0
-@FOR /F tokens^=1-3^ skip^=1^ delims^=.-^  %%a IN ('py -0 2^>nul') do @(
+@FOR /F tokens^=2-3^ skip^=1^ delims^=- %%a IN ('py -0 2^>nul') do @FOR /F tokens^=1-2^ delims^=. %%c IN ("%%a") do @(
 @set goodpython=1
-@if %%a LSS 3 set goodpython=0
-@if %%a EQU 3 if %%b LSS 5 set goodpython=0
+@if %%c LSS 3 set goodpython=0
+@if %%c EQU 3 if %%d LSS 5 set goodpython=0
 @IF !goodpython!==1 set /a pythoncount+=1
-@IF !pythoncount!==%pyselect% set selectedpython=-%%a.%%b-%%c
+@IF !pythoncount!==%pyselect% set selectedpython=-%%a-%%b
 )
 @FOR /F "tokens=* USEBACKQ" %%a IN (`py %selectedpython%  -c "import sys; print(sys.executable)"`) DO @set pythonloc=%%~sa
 @GOTO loadpypath
