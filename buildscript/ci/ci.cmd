@@ -73,9 +73,9 @@
 @call %devroot%\%projectname%\buildscript\build.cmd x64-%1
 @call %devroot%\%projectname%\buildscript\build.cmd x86-%1
 @cd %devroot%\%projectname%\dist\x64\bin
-@IF EXIST vk_swiftshader_icd.json IF EXIST libEGL.dll IF EXIST vk_swiftshader.dll set swiftshaderx64ok=1
+@IF EXIST vk_swiftshader_icd.json IF EXIST vk_swiftshader.dll set swiftshaderx64ok=1
 @cd %devroot%\%projectname%\dist\x86\bin
-@IF EXIST vk_swiftshader_icd.json IF EXIST libEGL.dll IF EXIST vk_swiftshader.dll set swiftshaderx86ok=1
+@IF EXIST vk_swiftshader_icd.json IF EXIST vk_swiftshader.dll set swiftshaderx86ok=1
 @IF NOT defined swiftshaderx64ok IF NOT defined swiftshaderx86ok GOTO doneci
 @cd %devroot%\%projectname%\dist
 @7z a -t7z -mx=9 ..\swiftshader-%artifactuid%-%1.7z .\*

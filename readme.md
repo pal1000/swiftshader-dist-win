@@ -10,7 +10,7 @@ Each binaries package has a life span of 30 days since creation per default Azur
 
 Legacy Direct3D drivers are available [here](https://github.com/pal1000/swiftshader-dist-win/releases/download/1.0.4g/swiftshader-legacy-D3D-2020_03_30.7z).
 ### How to use
-For OpenGL ES just copy `libEGL.dll`, `libGLES_CM.dll` and `libGLESv2.dll` from `x86\bin` / `x64\bin` depending on program architecture to program location. Same for legacy Direct3D drivers, `d3d8.dll` and `d3d9.dll`.
+For legacy Direct3D drivers just copy `d3d8.dll` and `d3d9.dll` from `x86\bin` / `x64\bin` depending on program architecture to program location.
 
 For Vulkan there are a few options (you pick one or more, first is the easiest):
 - Run `swiftshader-vulkan-setup.cmd` and follow the instructions (requires Vulkan loader, see paragraph bellow if you don't have any GPU with Vulkan support);

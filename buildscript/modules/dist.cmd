@@ -7,10 +7,10 @@
 @forfiles /p %devroot%\%projectname:~0,-9%\build\buildsys-%abi% /s /m *.json /c "cmd /c copy @path %devroot%\%projectname%\dist\%abi%\bin"
 @cd /d %devroot%\%projectname%\dist\%abi%\bin
 @IF EXIST translator RD /S /Q translator
-@md translator
-@move *translator.dll translator
-@REN libEGL_deprecated.dll libEGL.dll
-@REN libGLESv2_deprecated.dll libGLESv2.dll
+@IF EXIST *translator.dll md translator
+@IF EXIST *translator.dll move *translator.dll translator
+@IF EXIST libEGL_deprecated.dll REN libEGL_deprecated.dll libEGL.dll
+@IF EXIST libGLESv2_deprecated.dll REN libGLESv2_deprecated.dll libGLESv2.dll
 @echo.
 @endlocal
 @cd %devroot%

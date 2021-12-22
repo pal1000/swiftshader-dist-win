@@ -15,19 +15,25 @@
 @echo.
 @IF /I NOT "%buildswiftshader%"=="y" GOTO skipbuild
 
-@rem Get swiftshader source code if missing
-@IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader IF %cimode% EQU 0 git clone https://swiftshader.googlesource.com/SwiftShader %devroot%\swiftshader
-@IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader IF %cimode% EQU 1 git clone --depth=1 https://swiftshader.googlesource.com/SwiftShader %devroot%\swiftshader
-@IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader echo.
-@cd /d %devroot%\swiftshader
-
 @rem Ask to update source code if git is available
-@IF %gitstate% GTR 0 IF %cimode% EQU 0 set "srcupd="
-@IF %gitstate% GTR 0 IF %cimode% EQU 0 set /p srcupd=Update SwiftShader source code (y/n):
-@IF %gitstate% GTR 0 IF %cimode% EQU 1 echo Update SwiftShader source code (y/n):%srcupd%
-@IF %gitstate% GTR 0 echo.
-@IF %gitstate% GTR 0 IF /I "%srcupd%"=="y" git pull -v --progress origin
-@IF %gitstate% GTR 0 IF /I "%srcupd%"=="y" echo.
+@IF %gitstate% GTR 0 IF EXIST %devroot%\swiftshader IF %cimode% EQU 0 set "srcupd="
+@IF %gitstate% GTR 0 IF EXIST %devroot%\swiftshader IF %cimode% EQU 0 set /p srcupd=Update SwiftShader source code (y/n):
+@IF %gitstate% GTR 0 IF EXIST %devroot%\swiftshader IF %cimode% EQU 1 echo Update SwiftShader source code (y/n):%srcupd%
+@IF %gitstate% GTR 0 IF EXIST %devroot%\swiftshader echo.
+@IF %gitstate% GTR 0 IF EXIST %devroot%\swiftshader cd /d %devroot%\swiftshader
+@IF %gitstate% GTR 0 IF EXIST %devroot%\swiftshader IF /I "%srcupd%"=="y" git pull -v --progress origin
+@IF %gitstate% GTR 0 IF EXIST %devroot%\swiftshader IF /I "%srcupd%"=="y" echo.
+
+@rem Get swiftshader source code if missing
+@IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader IF %cimode% EQU 0 (
+@git clone https://swiftshader.googlesource.com/SwiftShader %devroot%\swiftshader
+@echo.
+)
+@IF %gitstate% GTR 0 IF NOT EXIST %devroot%\swiftshader IF %cimode% EQU 1 (
+@git clone --depth=1 https://swiftshader.googlesource.com/SwiftShader %devroot%\swiftshader
+@echo.
+)
+@cd /d %devroot%\swiftshader
 
 @IF NOT EXIST build md build
 @cd build
@@ -67,13 +73,6 @@
 @echo.
 @IF /I "%vk-swiftshader%"=="n" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_VULKAN=OFF
 @IF /I NOT "%vk-swiftshader%"=="n" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_VULKAN=ON
-
-@IF %cimode% EQU 0 set "gles-swiftshader="
-@IF %cimode% EQU 0 set /p gles-swiftshader=Build SwiftShader GLES Drivers - default^:no (y/n)^:
-@IF %cimode% EQU 1 echo Build SwiftShader GLES Drivers - default^:no (y/n)^:%gles-swiftshader%
-@echo.
-@IF /I "%gles-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_EGL=ON -DSWIFTSHADER_BUILD_GLESv2=ON
-@IF /I NOT "%gles-swiftshader%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_EGL=OFF -DSWIFTSHADER_BUILD_GLESv2=OFF
 
 @IF %cimode% EQU 0 set "subzerojit="
 @IF %cimode% EQU 0 set /p subzerojit=Use Subzero JIT instead of LLVM - default^:no (y/n)^:

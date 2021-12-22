@@ -18,8 +18,7 @@ Write CI script that:
 - [ ] implemnt system-wide legacy type vulkan driver deployment;
 - [x] implement programs launcher with swiftshader as unique Vulkan driver;
 - [ ] implement per application deployment with swiftshader as unique Vulkan driver;
-- [ ] implement system-wide vulkan driver deployment via fake GPU or dummy software component if possible;
-- [ ] implement per application deployment of swiftshader OpenGL ES driver.
+- [ ] implement system-wide vulkan driver deployment via fake GPU or dummy software component if possible.
 ### Support build with GN as an alternative to cmake (v1.2)
 - [ ] create choice for it and integrate with build configuration profiles;
 - [ ] research for and use cmake build options equivalents if possible.
