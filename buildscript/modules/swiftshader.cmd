@@ -67,13 +67,6 @@
 @if /I "%debugbuildscript%"=="y" GOTO donebldcfg
 @if /I NOT "%debugbuildscript%"=="y" set buildconf=%buildconf% -DSWIFTSHADER_WARNINGS_AS_ERRORS=OFF
 
-@IF %cimode% EQU 0 set "vk-swiftshader="
-@IF %cimode% EQU 0 set /p vk-swiftshader=Build SwiftShader Vulkan Driver - default^:yes (y/n)^:
-@IF %cimode% EQU 1 echo Build SwiftShader Vulkan Driver - default^:yes (y/n)^:%vk-swiftshader%
-@echo.
-@IF /I "%vk-swiftshader%"=="n" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_VULKAN=OFF
-@IF /I NOT "%vk-swiftshader%"=="n" set buildconf=%buildconf% -DSWIFTSHADER_BUILD_VULKAN=ON
-
 @IF %cimode% EQU 0 set "subzerojit="
 @IF %cimode% EQU 0 set /p subzerojit=Use Subzero JIT instead of LLVM - default^:no (y/n)^:
 @IF %cimode% EQU 1 echo Use Subzero JIT instead of LLVM - default^:no (y/n)^:%subzerojit%
@@ -82,11 +75,11 @@
 @IF /I NOT "%subzerojit%"=="y" set buildconf=%buildconf% -DREACTOR_BACKEND=LLVM
 
 @IF %cimode% EQU 0 set "spirvtools="
-@IF /I NOT "%vk-swiftshader%"=="n" IF %cimode% EQU 0 set /p spirvtools=Include SPIRV-Tools in release - default^:yes (y/n)^:
-@IF /I NOT "%vk-swiftshader%"=="n" IF %cimode% EQU 1 echo Include SPIRV-Tools in release - default^:yes (y/n)^:%spirvtools%
-@IF /I NOT "%vk-swiftshader%"=="n" echo.
-@IF /I NOT "%vk-swiftshader%"=="n" IF /I NOT "%spirvtools%"=="n" set buildconf=%buildconf% -DSKIP_SPIRV_TOOLS_INSTALL=OFF
-@IF /I NOT "%vk-swiftshader%"=="n" IF /I "%spirvtools%"=="n" set buildconf=%buildconf% -DSKIP_SPIRV_TOOLS_INSTALL=ON
+@IF %cimode% EQU 0 set /p spirvtools=Include SPIRV-Tools in release - default^:yes (y/n)^:
+@IF %cimode% EQU 1 echo Include SPIRV-Tools in release - default^:yes (y/n)^:%spirvtools%
+@echo.
+@IF /I NOT "%spirvtools%"=="n" set buildconf=%buildconf% -DSKIP_SPIRV_TOOLS_INSTALL=OFF
+@IF /I "%spirvtools%"=="n" set buildconf=%buildconf% -DSKIP_SPIRV_TOOLS_INSTALL=ON
 
 @IF %cimode% EQU 0 set "test-swiftshader="
 @IF %cimode% EQU 0 set /p test-swiftshader=Build SwiftShader tests - default^:no (y/n)^:
@@ -114,10 +107,10 @@
 @rem Generate build perform command
 @if /I NOT "%ninja%"=="y" if %abi%==x86 set buildcmd=msbuild -p^:Configuration^=release,Platform^=Win32 swiftshader.sln
 @if /I NOT "%ninja%"=="y" if %abi%==x64 set buildcmd=msbuild -p^:Configuration^=release,Platform^=x64 swiftshader.sln
-@if /I NOT "%ninja%"=="y" IF /I NOT "%vk-swiftshader%"=="n" IF /I NOT "%spirvtools%"=="n" set buildcmd=%buildcmd:~0,-15%INSTALL.vcxproj
+@if /I NOT "%ninja%"=="y" IF /I NOT "%spirvtools%"=="n" set buildcmd=%buildcmd:~0,-15%INSTALL.vcxproj
 @if /I NOT "%ninja%"=="y" set buildcmd=%buildcmd% -m^:%throttle% -v^:m
 @if /I "%ninja%"=="y" set buildcmd=ninja -j %throttle%
-@if /I "%ninja%"=="y" IF /I NOT "%vk-swiftshader%"=="n" IF /I NOT "%spirvtools%"=="n" set buildcmd=%buildcmd% install
+@if /I "%ninja%"=="y" IF /I NOT "%spirvtools%"=="n" set buildcmd=%buildcmd% install
 @rem Debug code to list ninja targets.
 @if /I "%debugbuildscript%"=="y" set buildcmd=ninja -t targets all
 
