@@ -1,2 +1,2 @@
-*.cmd eol=crlf
 * text=auto
+*.cmd text eol=crlf
