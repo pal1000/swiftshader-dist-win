@@ -15,7 +15,7 @@ For legacy Direct3D drivers just copy `d3d8.dll` and `d3d9.dll` from `x86\bin` /
 For Vulkan there are a few options (you pick one or more, first is the easiest):
 - Run `swiftshader-vulkan-setup.cmd` and follow the instructions (requires Vulkan loader, see paragraph bellow if you don't have any GPU with Vulkan support);
 - copy swiftshader DLL named`vulkan-1.dll` from `x86\bin` / `x64\bin` depending on program architecture to program location to use swiftshader instalable client driver directly bypassing Vulkan loader;
-- [register swiftshader instalable client driver to Vulkan loder](https://github.com/KhronosGroup/Vulkan-Loader/blob/master/loader/LoaderAndLayerInterface.md#icd-discovery) (expert method as it relies on registry changes, but it's a set and forget method if you keep unpacking swiftshader binaries on same location).
+- [register swiftshader instalable client driver to Vulkan loder](https://github.com/KhronosGroup/Vulkan-Loader/blob/master/docs/LoaderDriverInterface.md#driver-discovery) (expert method as it relies on registry changes, but it's a set and forget method if you keep unpacking swiftshader binaries on same location).
 
 Standalone Vulkan loader also known as Vulkan runtime is available [here](https://vulkan.lunarg.com/sdk/home#windows) - [Direct download](https://sdk.lunarg.com/sdk/download/latest/windows/vulkan-runtime.exe). But you may not need it if there is at least one GPU with Vulkan support on the system, because it's typically installed by Vulkan enabled graphics drivers. Though it won't hurt to update it, especially when GPU driver updates are missing in a long time.
 ### Problems reporting
