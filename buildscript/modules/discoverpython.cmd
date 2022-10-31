@@ -10,52 +10,46 @@
 @where /q py.exe
 @if NOT "%ERRORLEVEL%"=="0" GOTO nopylauncher
 
-:pylist
 @rem Count and list supported python installations
 @set pythontotal=0
-@IF %cimode% EQU 0 cls
-@IF %cimode% EQU 1 echo.
-@FOR /F tokens^=2-3^ skip^=1^ delims^=- %%a IN ('py -0 2^>nul') do @FOR /F tokens^=1-2^ delims^=. %%c IN ("%%a") do @(
+@FOR /F delims^=^ eol^= %%a IN ('py -0 2^>nul') do @IF NOT "%%a"=="" FOR /F tokens^=1^ eol^= %%b IN ("%%a") do @FOR /F "tokens=1-2 delims=. " %%c IN ('py %%b -c "import sys; print(sys.version)"') DO @(
 @set goodpython=1
 @if %%c LSS 3 set goodpython=0
 @if %%c EQU 3 if %%d LSS 5 set goodpython=0
 @IF !goodpython!==1 set /a pythontotal+=1
 @IF !pythontotal!==1 echo Select Python installation
-@IF !goodpython!==1 echo !pythontotal!. Python %%a %%b bit
+@IF !goodpython!==1 echo !pythontotal!. %%a
+@IF !goodpython!==1 set pyl[!pythontotal!]=%%b
 )
 @IF %pythontotal%==0 echo WARNING: No suitable Python installation found by Python launcher.
-@IF %pythontotal%==0 echo Note that SwiftShader requires Python 3.x.
+@IF %pythontotal%==0 echo Python 3.5 and newer is required.
 @IF %pythontotal%==0 echo.
 @IF %pythontotal%==0 GOTO nopylauncher
 @IF %pythontotal% GTR 0 echo.
 
+:pyselect
 @IF %cimode% EQU 0 set "pyselect="
 @IF %cimode% EQU 0 set /p pyselect=Select Python version by entering its index from the table above:
 @IF %cimode% EQU 1 echo Select Python version by entering its index from the table above:%pyselect%
 @echo.
 @IF "%pyselect%"=="" echo Invalid entry.
 @IF "%pyselect%"=="" IF %cimode% EQU 0 pause
-@IF "%pyselect%"=="" IF %cimode% EQU 0 GOTO pylist
+@IF "%pyselect%"=="" echo.
+@IF "%pyselect%"=="" IF %cimode% EQU 0 GOTO pyselect
 @IF "%pyselect%"=="" IF %cimode% EQU 1 exit
 @IF %pyselect% LEQ 0 echo Invalid entry.
 @IF %pyselect% LEQ 0 IF %cimode% EQU 0 pause
-@IF %pyselect% LEQ 0 IF %cimode% EQU 0 GOTO pylist
+@IF %pyselect% LEQ 0 echo.
+@IF %pyselect% LEQ 0 IF %cimode% EQU 0 GOTO pyselect
 @IF %pyselect% LEQ 0 IF %cimode% EQU 1 exit
 @IF %pyselect% GTR %pythontotal% echo Invalid entry.
 @IF %pyselect% GTR %pythontotal% IF %cimode% EQU 0 pause
-@IF %pyselect% GTR %pythontotal% IF %cimode% EQU 0 GOTO pylist
+@IF %pyselect% GTR %pythontotal% echo.
+@IF %pyselect% GTR %pythontotal% IF %cimode% EQU 0 GOTO pyselect
 @IF %pyselect% GTR %pythontotal% IF %cimode% EQU 1 exit
 
 @rem Locate selected Python installation
-@set pythoncount=0
-@FOR /F tokens^=2-3^ skip^=1^ delims^=- %%a IN ('py -0 2^>nul') do @FOR /F tokens^=1-2^ delims^=. %%c IN ("%%a") do @(
-@set goodpython=1
-@if %%c LSS 3 set goodpython=0
-@if %%c EQU 3 if %%d LSS 5 set goodpython=0
-@IF !goodpython!==1 set /a pythoncount+=1
-@IF !pythoncount!==%pyselect% set selectedpython=-%%a-%%b
-)
-@FOR /F "tokens=* USEBACKQ" %%a IN (`py %selectedpython%  -c "import sys; print(sys.executable)"`) DO @set pythonloc=%%~sa
+@FOR /F delims^=^ eol^= %%a IN ('py !pyl[%pyselect%]! -c "import sys; print(sys.executable)"') DO @set pythonloc=%%~sa
 @GOTO loadpypath
 
 :nopylauncher

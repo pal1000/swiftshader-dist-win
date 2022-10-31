@@ -24,7 +24,7 @@ jobs:
           git clone --depth=1 https://swiftshader.googlesource.com/SwiftShader swiftshader
           git clone https://github.com/pal1000/swiftshader-dist-win.git swiftshader-dist-win
           cd swiftshader-dist-win
-          git checkout 1.0.7.1
+          git checkout 1.0.7.2
           cd ..
         displayName: Get sources
       - script: swiftshader-dist-win\buildscript\ci\ci.cmd collectuids
