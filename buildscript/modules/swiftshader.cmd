@@ -141,4 +141,4 @@
 :skipbuild
 @rem Reset environment after swiftshader build.
 @endlocal
-@cd %devroot%
+@cd %devroot%\

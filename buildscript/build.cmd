@@ -5,6 +5,7 @@
 @cd "%~dp0"
 @cd ..\..\
 @for %%a in ("%cd%") do @set devroot=%%~sa
+@IF "%devroot:~-1%"=="\" set devroot=%devroot:~0,-1%
 
 @set projectname=swiftshader-dist-win
 @set "ERRORLEVEL="

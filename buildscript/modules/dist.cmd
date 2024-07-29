@@ -13,6 +13,6 @@
 @IF EXIST libGLESv2_deprecated.dll REN libGLESv2_deprecated.dll libGLESv2.dll
 @echo.
 @endlocal
-@cd %devroot%
+@cd %devroot%\
 @IF %cimode% EQU 0 pause
 @IF %cimode% EQU 0 echo.

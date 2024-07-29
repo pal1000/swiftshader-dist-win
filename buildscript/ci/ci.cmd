@@ -2,6 +2,7 @@
 @cd "%~dp0"
 @cd ..\..\..\
 @for %%a in ("%cd%") do @set devroot=%%~sa
+@IF "%devroot:~-1%"=="\" set devroot=%devroot:~0,-1%
 @set projectname=swiftshader-dist-win
 @IF /I %1==collectuids GOTO collectuids
 @IF /I NOT %1==collectuids GOTO runci
@@ -92,4 +93,4 @@
 
 :doneci
 @IF defined uptodatebuild call %devroot%\%projectname%\buildscript\ci\pushvar.cmd uptodatebuild
-@cd %devroot%
+@cd %devroot%\
