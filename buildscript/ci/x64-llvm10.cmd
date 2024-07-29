@@ -16,7 +16,8 @@
 @set pyupd=y
 
 @rem modules\throttle.cmd
-@set throttle=%NUMBER_OF_PROCESSORS%
+@rem Throttle LLVM10 backend build to 1 CPU to avoid heap exhaustion
+@set throttle=1
 
 @rem modules\swiftshader.cmd
 @set buildswiftshader=y
